@@ -1,16 +1,13 @@
 import { useRoute } from "@react-navigation/native";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ListItem, ScrollView, Text, YStack } from "tamagui";
-import { fetchGroup, GroupDetail } from "../services/api";
+import { GroupDetail } from "../../types/group.types";
+import { fetchGroup } from "./services/api";
 
 export default function GroupScreen() {
   const route = useRoute();
   const { groupId } = route.params as { groupId: string };
-  const {
-    data: group,
-    isLoading,
-    isError,
-  } = useSuspenseQuery<GroupDetail>({
+  const { data: group } = useSuspenseQuery<GroupDetail>({
     queryKey: ["group", groupId],
     queryFn: () => fetchGroup(Number(groupId)),
   });

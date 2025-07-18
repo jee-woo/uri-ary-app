@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react-native";
 import { Button, Text, XStack } from "tamagui";
 
-export default function MyGroupListHeader({
+export default function GroupListHeader({
   onActionPress,
 }: {
   onActionPress: () => void;
