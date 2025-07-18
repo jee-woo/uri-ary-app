@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { ListItem, ScrollView, Text, YStack } from "tamagui";
 import { fetchGroup, GroupDetail } from "../services/api";
 
@@ -10,8 +10,8 @@ export default function GroupScreen() {
     data: group,
     isLoading,
     isError,
-  } = useQuery<GroupDetail>({
-    queryKey: ["group"],
+  } = useSuspenseQuery<GroupDetail>({
+    queryKey: ["group", groupId],
     queryFn: () => fetchGroup(Number(groupId)),
   });
 
@@ -19,9 +19,9 @@ export default function GroupScreen() {
     <ScrollView>
       <YStack padding={16} gap={12}>
         <Text fontSize="$7" fontWeight="600">
-          {group?.name}
+          {group.name}
         </Text>
-        {group?.diaries.map((diary) => (
+        {group.diaries.map((diary) => (
           <ListItem key={diary.id} title={diary.title} onPress={() => {}} />
         ))}
       </YStack>

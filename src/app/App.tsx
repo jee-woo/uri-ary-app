@@ -3,15 +3,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { defaultConfig, themes } from "@tamagui/config/v4";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { ActivityIndicator, Platform, StatusBar, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { TamaguiProvider, createTamagui } from "tamagui";
 import LoginScreen from "../features/auth/screens/LoginScreen";
 import GroupCreateScreen from "../features/group/screens/GroupCreateScreen";
+import GroupListScreen from "../features/group/screens/GroupListScreen";
 import GroupScreen from "../features/group/screens/GroupScreen";
-import MyGroupListScreen from "../features/group/screens/MyGroupListScreen";
 
 const Stack = createNativeStackNavigator();
 const config = createTamagui({
@@ -61,22 +61,24 @@ export default function App() {
           <StatusBar />
           <SafeAreaView style={{ flex: 1 }}>
             <NavigationContainer linking={linking}>
-              <Stack.Navigator
-                initialRouteName={isLoggedIn ? "Home" : "Login"}
-                screenOptions={{ headerShown: false }}
-              >
-                <Stack.Screen name="Home" component={MyGroupListScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Group" component={GroupScreen} />
-                <Stack.Screen
-                  name="GroupCreate"
-                  component={GroupCreateScreen}
-                  options={{
-                    presentation: "modal",
-                    animation: "slide_from_bottom",
-                  }}
-                />
-              </Stack.Navigator>
+              <Suspense>
+                <Stack.Navigator
+                  initialRouteName={isLoggedIn ? "Home" : "Login"}
+                  screenOptions={{ headerShown: false }}
+                >
+                  <Stack.Screen name="Home" component={GroupListScreen} />
+                  <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="Group" component={GroupScreen} />
+                  <Stack.Screen
+                    name="GroupCreate"
+                    component={GroupCreateScreen}
+                    options={{
+                      presentation: "modal",
+                      animation: "slide_from_bottom",
+                    }}
+                  />
+                </Stack.Navigator>
+              </Suspense>
             </NavigationContainer>
           </SafeAreaView>
         </SafeAreaProvider>

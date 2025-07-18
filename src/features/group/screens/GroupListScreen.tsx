@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ScrollView, Spinner, Text, YStack } from "tamagui";
+import { ScrollView, Text, YStack } from "tamagui";
 
 import GroupActionSheet from "@/features/group/components/GroupActionSheet";
 import GroupCard from "@/features/group/components/GroupCard";
@@ -12,13 +12,13 @@ import JoinGroupSheet from "@/features/group/components/JoinGroupSheet";
 import { fetchGroups, Group } from "@/features/group/services/api";
 import { RootStackParamList } from "@/types/navigation.types";
 
-type MyGroupListScreenNavigationProp = NativeStackNavigationProp<
+type GroupListScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Group"
 >;
 
-export default function MyGroupListScreen() {
-  const navigation = useNavigation<MyGroupListScreenNavigationProp>();
+export default function GroupListScreen() {
+  const navigation = useNavigation<GroupListScreenNavigationProp>();
 
   const {
     data: groups,
@@ -61,13 +61,13 @@ export default function MyGroupListScreen() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <YStack flex={1} justifyContent="center" alignItems="center">
-        <Spinner size="large" />
-      </YStack>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <YStack flex={1} justifyContent="center" alignItems="center">
+  //       <Spinner size="large" />
+  //     </YStack>
+  //   );
+  // }
 
   if (isError) {
     AsyncStorage.removeItem("token");
