@@ -5,6 +5,7 @@ import { defaultConfig, themes } from "@tamagui/config/v4";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, useEffect, useState } from "react";
 
+import DevLoginScreen from "@/features/auth/screens/DevLoginScreen";
 import { ActivityIndicator, Platform, StatusBar, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { TamaguiProvider, createTamagui } from "tamagui";
@@ -26,6 +27,7 @@ const linking = {
     screens: {
       Home: "/",
       Login: "/login",
+      DevLogin: "/test-login",
       GroupCreate: "/groups/new",
       Group: "groups/:groupId",
     },
@@ -68,6 +70,7 @@ export default function App() {
                 >
                   <Stack.Screen name="Home" component={GroupListScreen} />
                   <Stack.Screen name="Login" component={LoginScreen} />
+                  <Stack.Screen name="DevLogin" component={DevLoginScreen} />
                   <Stack.Screen name="Group" component={GroupScreen} />
                   <Stack.Screen
                     name="GroupCreate"
