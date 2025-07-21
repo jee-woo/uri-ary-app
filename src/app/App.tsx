@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, useEffect, useState } from "react";
 
 import DevLoginScreen from "@/features/auth/screens/DevLoginScreen";
+import DiaryCreateScreen from "@/features/diary/screens/DiaryCreateScreen";
+import DiaryDetailScreen from "@/features/diary/screens/DiaryDetailScreen";
 import { ActivityIndicator, Platform, StatusBar, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { TamaguiProvider, createTamagui } from "tamagui";
@@ -80,6 +82,12 @@ export default function App() {
                       animation: "slide_from_bottom",
                     }}
                   />
+                  <Stack.Screen
+                    name="DiaryCreate"
+                    component={DiaryCreateScreen}
+                    options={{ title: "다이어리 작성" }}
+                  />
+                  <Stack.Screen name="Diary" component={DiaryDetailScreen} />
                 </Stack.Navigator>
               </Suspense>
             </NavigationContainer>
