@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { defaultConfig, themes } from "@tamagui/config/v4";
+import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, useEffect, useState } from "react";
 
@@ -61,38 +62,50 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TamaguiProvider config={config}>
-        <SafeAreaProvider>
-          <StatusBar />
-          <SafeAreaView style={{ flex: 1 }}>
-            <NavigationContainer linking={linking}>
-              <Suspense>
-                <Stack.Navigator
-                  initialRouteName={isLoggedIn ? "Home" : "Login"}
-                  screenOptions={{ headerShown: false }}
-                >
-                  <Stack.Screen name="Home" component={GroupListScreen} />
-                  <Stack.Screen name="Login" component={LoginScreen} />
-                  <Stack.Screen name="DevLogin" component={DevLoginScreen} />
-                  <Stack.Screen name="Group" component={GroupScreen} />
-                  <Stack.Screen
-                    name="GroupCreate"
-                    component={GroupCreateScreen}
-                    options={{
-                      presentation: "modal",
-                      animation: "slide_from_bottom",
-                    }}
-                  />
-                  <Stack.Screen
-                    name="DiaryCreate"
-                    component={DiaryCreateScreen}
-                    options={{ title: "다이어리 작성" }}
-                  />
-                  <Stack.Screen name="Diary" component={DiaryDetailScreen} />
-                </Stack.Navigator>
-              </Suspense>
-            </NavigationContainer>
-          </SafeAreaView>
-        </SafeAreaProvider>
+        <ToastProvider swipeDirection="horizontal">
+          <ToastViewport
+            multipleToasts
+            position="absolute"
+            top={undefined}
+            bottom={20}
+            left={0}
+            right={0}
+            width="100%"
+            alignItems="center"
+          />
+          <SafeAreaProvider>
+            <StatusBar />
+            <SafeAreaView style={{ flex: 1 }}>
+              <NavigationContainer linking={linking}>
+                <Suspense>
+                  <Stack.Navigator
+                    initialRouteName={isLoggedIn ? "Home" : "Login"}
+                    screenOptions={{ headerShown: false }}
+                  >
+                    <Stack.Screen name="Home" component={GroupListScreen} />
+                    <Stack.Screen name="Login" component={LoginScreen} />
+                    <Stack.Screen name="DevLogin" component={DevLoginScreen} />
+                    <Stack.Screen name="Group" component={GroupScreen} />
+                    <Stack.Screen
+                      name="GroupCreate"
+                      component={GroupCreateScreen}
+                      options={{
+                        presentation: "modal",
+                        animation: "slide_from_bottom",
+                      }}
+                    />
+                    <Stack.Screen
+                      name="DiaryCreate"
+                      component={DiaryCreateScreen}
+                      options={{ title: "다이어리 작성" }}
+                    />
+                    <Stack.Screen name="Diary" component={DiaryDetailScreen} />
+                  </Stack.Navigator>
+                </Suspense>
+              </NavigationContainer>
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </ToastProvider>
       </TamaguiProvider>
     </QueryClientProvider>
   );

@@ -30,6 +30,7 @@ export default function GroupScreen() {
         onActionPress={() =>
           navigation.navigate("DiaryCreate", { groupId: Number(groupId) })
         }
+        inviteCode={group.code}
       />
 
       <YStack padding={16} gap={16}>
