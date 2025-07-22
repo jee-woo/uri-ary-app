@@ -7,11 +7,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Image, Input, Spinner, Text, TextArea, YStack } from "tamagui";
+import { Button, Image, Spinner, Text, TextArea, YStack } from "tamagui";
 import { z } from "zod";
 
 const DiarySchema = z.object({
-  title: z.string().min(1, "제목은 필수입니다."),
+  // title: z.string().min(1, "제목은 필수입니다."),
   content: z.string().min(1, "내용을 입력해주세요."),
 });
 
@@ -35,7 +35,7 @@ export default function DiaryCreateScreen() {
     formState: { errors },
   } = useForm<DiaryInput>({
     resolver: zodResolver(DiarySchema),
-    defaultValues: { title: "", content: "" },
+    defaultValues: { content: "" },
   });
 
   // ✅ 이미지 선택
@@ -64,7 +64,7 @@ export default function DiaryCreateScreen() {
       const token = await AsyncStorage.getItem("token");
       const formData = new FormData();
 
-      formData.append("title", data.title);
+      formData.append("title", ""); //
       formData.append("content", data.content);
 
       if (imageUri) {
@@ -107,7 +107,7 @@ export default function DiaryCreateScreen() {
       </Text>
 
       {/* ✅ 제목 */}
-      <Controller
+      {/* <Controller
         control={control}
         name="title"
         render={({ field: { value, onChange } }) => (
@@ -118,7 +118,7 @@ export default function DiaryCreateScreen() {
           />
         )}
       />
-      {errors.title && <Text color="red">{errors.title.message}</Text>}
+      {errors.title && <Text color="red">{errors.title.message}</Text>} */}
 
       {/* ✅ 내용 */}
       <Controller

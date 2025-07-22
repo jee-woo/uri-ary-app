@@ -1,13 +1,8 @@
+import KeyboardAvoidingWrapper from "@/components/KeyboardAvoidingWrapper";
 import { baseUrl } from "@/constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-} from "react-native";
 import { Image, ScrollView, Spinner, Text, YStack } from "tamagui";
 import { DiaryDetail, NestedComment } from "../../types/diary.types";
 import CommentForm from "./components/CommentForm";
@@ -60,90 +55,83 @@ export default function DiaryDetailScreen() {
   const commentTree: NestedComment[] = buildCommentTree(diary.comments);
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0} // 헤더 높이에 맞게 조정
-    >
-      {/* ✅ 키보드 밖을 클릭하면 키보드 닫히게 처리 */}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <YStack flex={1} backgroundColor="$background">
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{ padding: 20, paddingBottom: 80 }}
-          >
-            {/* ✅ 일기 상세 */}
-            <YStack gap={10}>
-              <Text fontSize="$6" fontWeight="700">
-                {diary.authorUsername}
-              </Text>
-              <Text fontSize="$3" color="$colorPress">
-                {formatDate(diary.createdAt)}
-              </Text>
+    <KeyboardAvoidingWrapper>
+      <YStack flex={1} backgroundColor="$background">
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ padding: 20, paddingBottom: 80 }}
+        >
+          {/* ✅ 일기 상세 */}
+          <YStack gap={10}>
+            <Text fontSize="$6" fontWeight="700">
+              {diary.authorUsername}
+            </Text>
+            <Text fontSize="$3" color="$colorPress">
+              {formatDate(diary.createdAt)}
+            </Text>
 
-              {diary.imageUrl && (
-                <Image
-                  source={{ uri: diary.imageUrl }}
-                  style={{
-                    width: "100%",
-                    height: 220,
-                    borderRadius: 10,
-                    marginTop: 6,
-                  }}
-                />
-              )}
+            {diary.imageUrl && (
+              <Image
+                source={{ uri: diary.imageUrl }}
+                style={{
+                  width: "100%",
+                  height: 220,
+                  borderRadius: 10,
+                  marginTop: 6,
+                }}
+              />
+            )}
 
-              <Text fontSize="$5" lineHeight="$5" marginTop={4}>
-                {diary.content}
-              </Text>
-            </YStack>
-
-            {/* ✅ 댓글 리스트 */}
-            <YStack gap={12} marginTop={24}>
-              <Text fontSize="$4" fontWeight="600">
-                댓글
-              </Text>
-
-              {commentTree.length === 0 ? (
-                <Text color="$colorPress" fontSize="$3">
-                  아직 댓글이 없습니다.
-                </Text>
-              ) : (
-                <YStack gap={12}>
-                  {commentTree.map((comment) => (
-                    <CommentItem
-                      key={comment.id}
-                      comment={comment}
-                      diaryId={diaryId}
-                    />
-                  ))}
-                </YStack>
-              )}
-            </YStack>
-          </ScrollView>
-
-          <YStack
-            padding={12}
-            borderTopWidth={1}
-            borderColor="$backgroundHover"
-            backgroundColor="$background"
-          >
-            <CommentForm
-              onSubmit={async (content) => {
-                const token = await AsyncStorage.getItem("token");
-                await fetch(`${baseUrl}/api/diaries/${diaryId}/comments`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: JSON.stringify({ content }),
-                });
-              }}
-            />
+            <Text fontSize="$5" lineHeight="$5" marginTop={4}>
+              {diary.content}
+            </Text>
           </YStack>
+
+          {/* ✅ 댓글 리스트 */}
+          <YStack gap={12} marginTop={24}>
+            <Text fontSize="$4" fontWeight="600">
+              댓글
+            </Text>
+
+            {commentTree.length === 0 ? (
+              <Text color="$colorPress" fontSize="$3">
+                아직 댓글이 없습니다.
+              </Text>
+            ) : (
+              <YStack gap={12}>
+                {commentTree.map((comment) => (
+                  <CommentItem
+                    key={comment.id}
+                    comment={comment}
+                    diaryId={diaryId}
+                  />
+                ))}
+              </YStack>
+            )}
+          </YStack>
+        </ScrollView>
+
+        <YStack
+          padding={12}
+          borderTopWidth={1}
+          borderColor="$backgroundHover"
+          backgroundColor="$background"
+        >
+          <CommentForm
+            onSubmit={async (content) => {
+              const token = await AsyncStorage.getItem("token");
+              await fetch(`${baseUrl}/api/diaries/${diaryId}/comments`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ content }),
+              });
+            }}
+          />
         </YStack>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </YStack>
+    </KeyboardAvoidingWrapper>
   );
 }
