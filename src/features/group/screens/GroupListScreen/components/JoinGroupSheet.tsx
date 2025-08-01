@@ -21,6 +21,7 @@ export default function JoinGroupSheet({
       snapPoints={[40]}
       modal
       dismissOnSnapToBottom
+      moveOnKeyboardChange
     >
       <Sheet.Overlay
         backgroundColor="rgba(0,0,0,0.2)"
