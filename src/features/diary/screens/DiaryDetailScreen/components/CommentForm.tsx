@@ -1,74 +1,83 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { Button, Text, TextArea, XStack, YStack } from "tamagui";
-import { z } from "zod";
+import { useEffect, useRef, useState } from "react";
+import { TextInput } from "react-native";
+import { Button, Input, Text, XStack, YStack } from "tamagui";
 
-const schema = z.object({
-  content: z.string().min(1, "댓글을 입력해주세요."),
-});
+interface CommentFormProps {
+  parentId: number | null;
+  parentUsername: string | null;
+  parentContent: string | null;
+  onSubmit: (content: string, parentId?: number | null) => void;
+}
 
-type FormData = z.infer<typeof schema>;
+export default function CommentForm(props: CommentFormProps) {
+  const { parentId, parentUsername, parentContent, onSubmit } = props;
 
-export default function CommentForm({
-  onSubmit,
-  parentId,
-}: {
-  onSubmit: (content: string, parentId?: number) => void;
-  parentId?: number;
-}) {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { content: "" },
-  });
+  const [content, setContent] = useState("");
+  const inputRef = useRef<TextInput>(null);
+  const isReplying = !!parentId;
 
-  const submit = (data: FormData) => {
-    onSubmit(data.content, parentId);
-    reset();
+  const handleSubmit = () => {
+    if (!content.trim()) return;
+
+    onSubmit(content.trim(), parentId);
+    setContent("");
   };
 
+  useEffect(() => {
+    if (isReplying && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isReplying]);
+
   return (
-    <YStack gap={6} marginTop={8}>
-      <XStack alignItems="flex-start" gap={6}>
-        {/* ✅ 입력창 */}
-        <Controller
-          control={control}
-          name="content"
-          render={({ field: { value, onChange } }) => (
-            <TextArea
-              value={value}
-              onChangeText={onChange}
-              placeholder={parentId ? "답글을 입력하세요" : "댓글을 입력하세요"}
-              rows={3}
-              textAlignVertical="top"
-              flex={1} // ✅ 남는 공간을 모두 차지
-              style={{
-                minHeight: 60,
-              }}
-            />
+    <YStack gap={8}>
+      {isReplying && (
+        <YStack gap={4}>
+          <XStack justifyContent="space-between" alignItems="center">
+            <Text fontSize="$3" color="$colorPress">
+              {parentUsername ?? "작성자"}님에게 답글 작성 중...
+            </Text>
+            <Button
+              size="$2"
+              variant="outlined"
+              onPress={() => onSubmit("", null)}
+            >
+              취소
+            </Button>
+          </XStack>
+
+          {parentContent && (
+            <Text
+              fontSize="$3"
+              color="$black8"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              "{parentContent}"
+            </Text>
           )}
+        </YStack>
+      )}
+
+      <XStack gap={8} alignItems="flex-start">
+        <Input
+          ref={inputRef}
+          placeholder={isReplying ? "답글을 입력하세요" : "댓글을 입력하세요"}
+          value={content}
+          onChangeText={setContent}
+          multiline
+          flex={1}
         />
 
-        {/* ✅ 버튼 (오른쪽에 고정) */}
         <Button
-          size="$2"
-          variant="outlined"
-          onPress={handleSubmit(submit)}
-          alignSelf="stretch" // ✅ TextArea와 세로 높이 맞춤
+          size="$3"
+          onPress={handleSubmit}
+          disabled={!content.trim()}
+          alignSelf="stretch"
         >
           등록
         </Button>
       </XStack>
-
-      {errors.content && (
-        <Text color="red" fontSize="$2">
-          {errors.content.message}
-        </Text>
-      )}
     </YStack>
   );
 }

@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Button, Text, YStack } from "tamagui";
 import { fetchGroups } from "../services/api";
 import GroupCard from "./GroupCard";
@@ -24,10 +25,12 @@ const GroupList = () => {
   });
 
   const navigation = useNavigation<GroupListScreenNavigationProp>();
+  useEffect(() => {
+    if (isError) navigation.navigate("Login");
+  }, [isError]);
 
   if (isError) {
     AsyncStorage.removeItem("token");
-    navigation.navigate("Login");
     return (
       <YStack flex={1} justifyContent="center" alignItems="center">
         <Text color="red">그룹을 불러오는 데 실패했습니다.</Text>

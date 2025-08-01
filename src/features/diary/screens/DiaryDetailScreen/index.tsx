@@ -3,6 +3,7 @@ import { baseUrl } from "@/constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Image, ScrollView, Spinner, Text, YStack } from "tamagui";
 import { DiaryDetail, NestedComment } from "../../types/diary.types";
 import CommentForm from "./components/CommentForm";
@@ -35,6 +36,9 @@ export default function DiaryDetailScreen() {
     queryKey: ["diaryDetail", groupId, diaryId],
     queryFn: () => fetchDiaryDetail(groupId, diaryId),
   });
+  const [replyParentId, setReplyParentId] = useState<number | null>(null);
+  const [replyUsername, setReplyUsername] = useState<string | null>(null);
+  const [replyContent, setReplyContent] = useState<string | null>(null);
 
   if (isLoading) {
     return (
@@ -104,6 +108,11 @@ export default function DiaryDetailScreen() {
                     key={comment.id}
                     comment={comment}
                     diaryId={diaryId}
+                    onReplyPress={(id, username, content) => {
+                      setReplyParentId(id);
+                      setReplyUsername(username);
+                      setReplyContent(content);
+                    }}
                   />
                 ))}
               </YStack>
@@ -111,6 +120,7 @@ export default function DiaryDetailScreen() {
           </YStack>
         </ScrollView>
 
+        {/* 통합 입력폼 */}
         <YStack
           padding={12}
           borderTopWidth={1}
@@ -118,7 +128,17 @@ export default function DiaryDetailScreen() {
           backgroundColor="$background"
         >
           <CommentForm
-            onSubmit={async (content) => {
+            parentId={replyParentId}
+            parentUsername={replyUsername}
+            parentContent={replyContent}
+            onSubmit={async (content, parentId) => {
+              if (content === "") {
+                setReplyParentId(null);
+                setReplyUsername(null);
+                setReplyContent(null);
+                return;
+              }
+
               const token = await AsyncStorage.getItem("token");
               await fetch(`${baseUrl}/api/diaries/${diaryId}/comments`, {
                 method: "POST",
@@ -126,8 +146,12 @@ export default function DiaryDetailScreen() {
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ content }),
+                body: JSON.stringify({ content, parentId }),
               });
+
+              setReplyParentId(null);
+              setReplyUsername(null);
+              setReplyContent(null);
             }}
           />
         </YStack>
