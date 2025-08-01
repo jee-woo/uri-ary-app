@@ -1,5 +1,7 @@
 import { NestedComment } from "@/features/diary/types/diary.types";
-import { Button, Text, XStack, YStack } from "tamagui";
+import { MessageCircle } from "lucide-react-native";
+import { Pressable } from "react-native";
+import { Text, XStack, YStack } from "tamagui";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -10,22 +12,16 @@ function formatDate(dateString: string) {
     date.getHours()
   ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
+
 export default function CommentItem({
   comment,
-  diaryId,
   onReplyPress,
 }: {
   comment: NestedComment;
-  diaryId: string;
   onReplyPress: (id: number, username: string, content: string) => void;
 }) {
   return (
-    <YStack
-      marginBottom={10}
-      marginLeft={comment.parentId ? 16 : 0}
-      gap={4}
-      paddingVertical={4}
-    >
+    <YStack gap={4}>
       <XStack alignItems="center" gap={6}>
         <Text fontWeight="700">{comment.authorUsername}</Text>
         <Text fontSize="$2" color="$colorPress">
@@ -38,31 +34,22 @@ export default function CommentItem({
       </Text>
 
       {comment.parentId === null && (
-        <Button
-          size="$2"
-          variant="outlined"
+        <Pressable
           onPress={() =>
             onReplyPress(comment.id, comment.authorUsername, comment.content)
           }
-          marginTop={4}
-          alignSelf="flex-start"
+          style={{
+            paddingVertical: 4,
+            alignSelf: "flex-start",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
         >
-          답글 달기
-        </Button>
-      )}
-
-      {/* 답글들 */}
-      {comment.replies.length > 0 && (
-        <YStack marginTop={6} gap={8}>
-          {comment.replies.map((reply) => (
-            <CommentItem
-              key={reply.id}
-              comment={reply}
-              diaryId={diaryId}
-              onReplyPress={onReplyPress}
-            />
-          ))}
-        </YStack>
+          <MessageCircle size={16} color="#888" />
+          <Text fontSize="$2" marginLeft={4} color="#888">
+            답글
+          </Text>
+        </Pressable>
       )}
     </YStack>
   );

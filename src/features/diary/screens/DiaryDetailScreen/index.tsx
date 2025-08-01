@@ -107,7 +107,6 @@ export default function DiaryDetailScreen() {
                   <CommentItem
                     key={comment.id}
                     comment={comment}
-                    diaryId={diaryId}
                     onReplyPress={(id, username, content) => {
                       setReplyParentId(id);
                       setReplyUsername(username);
