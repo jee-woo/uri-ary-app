@@ -1,27 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { defaultConfig, themes } from "@tamagui/config/v4";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense, useEffect, useState } from "react";
 
 import DevLoginScreen from "@/features/auth/screens/DevLoginScreen";
+import LoginScreen from "@/features/auth/screens/LoginScreen";
 import DiaryCreateScreen from "@/features/diary/screens/DiaryCreateScreen";
 import DiaryDetailScreen from "@/features/diary/screens/DiaryDetailScreen";
+import GroupCreateScreen from "@/features/group/screens/GroupCreateScreen";
+import GroupListScreen from "@/features/group/screens/GroupListScreen";
+import GroupScreen from "@/features/group/screens/GroupScreen";
 import { ActivityIndicator, Platform, StatusBar, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { TamaguiProvider, createTamagui } from "tamagui";
-import LoginScreen from "../features/auth/screens/LoginScreen";
-import GroupCreateScreen from "../features/group/screens/GroupCreateScreen";
-import GroupListScreen from "../features/group/screens/GroupListScreen";
-import GroupScreen from "../features/group/screens/GroupScreen";
+import { TamaguiProvider } from "tamagui";
+import { config } from "../tamagui.config";
 
 const Stack = createNativeStackNavigator();
-const config = createTamagui({
-  ...defaultConfig,
-  themes,
-});
+
 const queryClient = new QueryClient();
 
 const linking = {
@@ -62,6 +59,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TamaguiProvider config={config}>
+        {/* <KeyboardProvider> */}
         <ToastProvider swipeDirection="horizontal">
           <ToastViewport
             multipleToasts
@@ -106,6 +104,7 @@ export default function App() {
             </SafeAreaView>
           </SafeAreaProvider>
         </ToastProvider>
+        {/* </KeyboardProvider> */}
       </TamaguiProvider>
     </QueryClientProvider>
   );
