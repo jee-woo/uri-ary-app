@@ -1,4 +1,3 @@
-import GroupDetailHeader from "@/features/diary/screens/DiaryCreateScreen/components/GroupDetailHeader";
 import { RootStackParamList } from "@/types/navigation.types";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -6,6 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ScrollView, Text, YStack } from "tamagui";
 import { GroupDetail } from "../../types/group.types";
 import DiarySpringItem from "./components/DiarySpringItem";
+import GroupDetailHeader from "./components/GroupDetailHeader";
 import { fetchGroup } from "./services/api";
 import { groupByDate } from "./utils/groupByDate";
 
