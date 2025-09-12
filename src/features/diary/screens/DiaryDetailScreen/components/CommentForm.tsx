@@ -2,25 +2,54 @@ import { useEffect, useRef, useState } from "react";
 import { TextInput } from "react-native";
 import { Button, Input, Text, XStack, YStack } from "tamagui";
 
+import { useToastController } from "@tamagui/toast";
+import { useCreateCommentMutation } from "../hooks/mutations/useCreateCommentMutation";
+
 interface CommentFormProps {
+  diaryId: string;
   parentId: number | null;
+  groupId: string;
   parentUsername: string | null;
   parentContent: string | null;
-  onSubmit: (content: string, parentId?: number | null) => void;
+  onReset: () => void;
 }
 
-export default function CommentForm(props: CommentFormProps) {
-  const { parentId, parentUsername, parentContent, onSubmit } = props;
-
+export default function CommentForm({
+  diaryId,
+  parentId,
+  groupId,
+  parentUsername,
+  parentContent,
+  onReset,
+}: CommentFormProps) {
   const [content, setContent] = useState("");
   const inputRef = useRef<TextInput>(null);
   const isReplying = !!parentId;
 
+  const toast = useToastController();
+  const { mutate, isPending } = useCreateCommentMutation();
+
   const handleSubmit = () => {
     if (!content.trim()) return;
 
-    onSubmit(content.trim(), parentId);
+    mutate(
+      { diaryId, content: content.trim(), parentId, groupId },
+      {
+        onSuccess: () => {
+          toast.show("댓글 등록 완료!", { native: true });
+          setContent("");
+          onReset();
+        },
+        onError: () => {
+          toast.show("댓글 등록 실패", { native: true });
+        },
+      }
+    );
+  };
+
+  const handleCancel = () => {
     setContent("");
+    onReset();
   };
 
   useEffect(() => {
@@ -37,11 +66,7 @@ export default function CommentForm(props: CommentFormProps) {
             <Text fontSize="$3" color="$colorPress">
               {parentUsername ?? "작성자"}님에게 답글 작성 중...
             </Text>
-            <Button
-              size="$2"
-              variant="outlined"
-              onPress={() => onSubmit("", null)}
-            >
+            <Button size="$2" variant="outlined" onPress={handleCancel}>
               취소
             </Button>
           </XStack>
@@ -72,7 +97,7 @@ export default function CommentForm(props: CommentFormProps) {
         <Button
           size="$3"
           onPress={handleSubmit}
-          disabled={!content.trim()}
+          disabled={!content.trim() || isPending}
           alignSelf="stretch"
         >
           등록

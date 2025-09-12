@@ -25,3 +25,25 @@ export async function fetchDiaryDetail(
 
   return data;
 }
+
+export async function createComment(
+  diaryId: string,
+  content: string,
+  parentId: number | null = null
+) {
+  const token = await AsyncStorage.getItem("token");
+  const res = await fetch(`${baseUrl}/api/diaries/${diaryId}/comments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content, parentId }),
+  });
+
+  if (!res.ok) {
+    throw new Error("댓글 작성 실패");
+  }
+
+  return res.json();
+}
