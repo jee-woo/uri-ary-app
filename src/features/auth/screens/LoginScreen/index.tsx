@@ -3,9 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Constants from "expo-constants";
 import * as Linking from "expo-linking";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button, Text, YStack } from "tamagui";
-import { RootStackParamList } from "../../../types/navigation.types";
+import { RootStackParamList } from "../../../../types/navigation.types";
 
 type Navigation = NativeStackNavigationProp<RootStackParamList, "Login">;
 

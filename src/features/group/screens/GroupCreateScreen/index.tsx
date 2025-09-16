@@ -2,12 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, Input, ScrollView, Spinner, Text, YStack } from "tamagui";
 import { z } from "zod";
 
-import { RootStackParamList } from "../../../types/navigation.types";
+import { RootStackParamList } from "@/types/navigation.types";
 
 const groupSchema = z.object({
   name: z.string().min(1, "그룹 이름을 입력해주세요"),

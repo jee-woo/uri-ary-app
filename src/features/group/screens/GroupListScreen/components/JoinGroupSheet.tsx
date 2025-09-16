@@ -1,30 +1,39 @@
-import React, { useState } from "react";
-import { Modal } from "react-native";
-import { Button, Input, Text, YStack } from "tamagui";
+import { useState } from "react";
+import { Button, Input, Sheet, Text, YStack } from "tamagui";
 
-interface JoinGroupModalProps {
+interface JoinGroupSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onJoin: (code: string) => void;
 }
 
-export default function JoinGroupModal({
+export default function JoinGroupSheet({
   isOpen,
   onClose,
   onJoin,
-}: JoinGroupModalProps) {
+}: JoinGroupSheetProps) {
   const [code, setCode] = useState("");
 
   return (
-    <Modal visible={isOpen} transparent animationType="slide">
-      <YStack
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        backgroundColor="rgba(0,0,0,0.5)"
+    <Sheet
+      open={isOpen}
+      onOpenChange={onClose}
+      snapPoints={[40]}
+      modal
+      dismissOnSnapToBottom
+      moveOnKeyboardChange
+    >
+      <Sheet.Overlay
+        backgroundColor="rgba(0,0,0,0.2)"
+        enterStyle={{ opacity: 0 }}
+        exitStyle={{ opacity: 0 }}
+      />
+      <Sheet.Frame
+        borderTopLeftRadius={16}
+        borderTopRightRadius={16}
         padding={20}
       >
-        <YStack backgroundColor="white" padding={20} borderRadius={8} gap={12}>
+        <YStack gap={12}>
           <Text fontSize="$6" fontWeight="600">
             그룹 참여
           </Text>
@@ -40,7 +49,7 @@ export default function JoinGroupModal({
             </Button>
           </YStack>
         </YStack>
-      </YStack>
-    </Modal>
+      </Sheet.Frame>
+    </Sheet>
   );
 }
