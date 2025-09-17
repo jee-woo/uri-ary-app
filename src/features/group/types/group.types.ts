@@ -8,7 +8,7 @@ interface Member {
   username: string;
   email: string;
 }
-interface Diary {
+export interface Diary {
   id: number;
   content: string;
   authorUsername: string;

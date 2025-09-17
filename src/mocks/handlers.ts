@@ -16,7 +16,7 @@ function randomDateWithin(yearsAgo: number = 2): string {
 }
 
 // ─────────────── 그룹 리스트 (/api/groups/user) ───────────────
-const groups: Group[] = Array.from({ length: 4 }).map((_, idx) => ({
+const groups: Group[] = Array.from({ length: 10 }).map((_, idx) => ({
   id: idx + 1,
   name: faker.word.words({ count: { min: 2, max: 4 } }),
 }));

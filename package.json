@@ -6,7 +6,8 @@
     "start": "expo start --lan -c",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "web:mock": "MOCK=1 expo start --web -c"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
@@ -48,9 +49,16 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@faker-js/faker": "^10.0.0",
     "@types/react": "~19.0.10",
     "@types/uuid": "^10.0.0",
+    "msw": "^2.11.2",
     "typescript": "~5.8.3"
   },
-  "private": true
+  "private": true,
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }
