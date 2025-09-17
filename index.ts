@@ -1,8 +1,14 @@
 import { registerRootComponent } from "expo";
-
+import Constants from "expo-constants";
 import App from "./src/App";
+import { worker } from "./src/mocks/browser";
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+const isMock = Constants.expoConfig?.extra?.eas?.mock === "1";
+
+if (isMock) {
+  worker.start().then(() => {
+    registerRootComponent(App);
+  });
+} else {
+  registerRootComponent(App);
+}

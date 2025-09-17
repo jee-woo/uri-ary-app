@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { FlatList } from "react-native";
 import { Button, Text, YStack } from "tamagui";
 import { fetchGroups } from "../services/api";
 import GroupCard from "./GroupCard";
@@ -40,11 +41,12 @@ const GroupList = () => {
   }
 
   return (
-    <YStack padding={16} gap={12}>
-      {groups?.map((group) => (
-        <GroupCard key={group.id} id={group.id} name={group.name} />
-      ))}
-    </YStack>
+    <FlatList
+      data={groups}
+      renderItem={({ item }) => <GroupCard id={item.id} name={item.name} />}
+      keyExtractor={(item) => item.id.toString()}
+      contentContainerStyle={{ padding: 16, gap: 12 }}
+    />
   );
 };
 
