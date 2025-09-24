@@ -1,18 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, Sheet, Text, YStack } from "tamagui";
 
 interface JoinGroupSheetProps {
   isOpen: boolean;
   onClose: () => void;
   onJoin: (code: string) => void;
+  isPending?: boolean;
 }
 
 export default function JoinGroupSheet({
   isOpen,
   onClose,
   onJoin,
+  isPending,
 }: JoinGroupSheetProps) {
   const [code, setCode] = useState("");
+
+  useEffect(() => {
+    if (!isOpen) {
+      setCode("");
+    }
+  }, [isOpen]);
 
   return (
     <Sheet
@@ -43,8 +51,10 @@ export default function JoinGroupSheet({
             onChangeText={setCode}
           />
           <YStack gap={8}>
-            <Button onPress={() => onJoin(code)}>참여</Button>
-            <Button variant="outlined" onPress={onClose}>
+            <Button onPress={() => onJoin(code)} disabled={isPending}>
+              {isPending ? "참여 중..." : "참여"}
+            </Button>
+            <Button variant="outlined" onPress={onClose} disabled={isPending}>
               닫기
             </Button>
           </YStack>
