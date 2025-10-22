@@ -1,0 +1,48 @@
+name: AI PR Review (Gemini bot)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect PR data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/pulls/$PR > pr.json
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/pulls/$PR/files > pr_files.json
+
+      - name: Run Gemini CLI (no install)
+        id: gcli
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: |
+            역할: 엄격하지만 건설적인 시니어 코드리뷰어.
+            목표: 보안/성능/동시성/테스트 기준으로 핵심 리스크만 요약.
+            출력: Markdown. 과한 사소한 지적 제외. 실행 가능한 수정 제안 포함.
+            입력: pr.json, pr_files.json
+        # 필요하면 files: 'pr.json,pr_files.json' 같은 인풋을 액션에 넘기는 방식으로도 구성 가능
+
+      - name: Post review as bot
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+          printf '%s' "${{ steps.gcli.outputs.summary }}" | jq -Rs '{event:"COMMENT",body:.}' > review.json
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/pulls/$PR/reviews -d @review.json
