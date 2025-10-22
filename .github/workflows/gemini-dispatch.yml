@@ -1,0 +1,15 @@
+name: "Gemini PR Review (internal branches)"
+on:
+  pull_request:
+    types: [opened, synchronize, reopened] # 같은 레포 브랜치 PR에만 시크릿 전달됨
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  call-review:
+    uses: ./.github/workflows/gemini-review.yml
+    secrets: inherit # ✅ 시크릿 전달
+    with:
+      additional_context: "Focus on security/performance, keep comments concise."

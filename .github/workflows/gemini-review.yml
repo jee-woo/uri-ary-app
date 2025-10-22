@@ -1,0 +1,73 @@
+name: "🔎 Gemini Review"
+on:
+  workflow_call:
+    inputs:
+      additional_context:
+        type: string
+        required: false
+
+concurrency:
+  group: "${{ github.workflow }}-review-${{ github.event_name }}-${{ github.event.pull_request.number || github.event.issue.number }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Gemini PR review (no install)
+        id: gcli
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }} # ✅ 인증 필수
+          # GitHub MCP 서버를 도커로 띄우고 필요한 툴만 허용
+          settings: |
+            {
+              "mcpServers": {
+                "github": {
+                  "command": "docker",
+                  "args": ["run","-i","--rm","-e","GITHUB_PERSONAL_ACCESS_TOKEN","ghcr.io/github/github-mcp-server:latest"],
+                  "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${{ github.token }}" },
+                  "includeTools": [
+                    "get_pull_request",
+                    "get_pull_request_files",
+                    "get_pull_request_diff",
+                    "create_pending_pull_request_review",
+                    "add_comment_to_pending_review",
+                    "submit_pending_pull_request_review"
+                  ]
+                }
+              },
+              "tools": { "core": [ "run_shell_command(echo)" ] }
+            }
+          # 모델에게 무엇을 하라고 지시할지(요약+인라인 코멘트)
+          prompt: |
+            ## Role
+            You are a precise, constructive senior reviewer. Review PR ${{ github.event.pull_request.number }} in ${{ github.repository }}.
+            Use only MCP github tools to read PR/diff and to post review.
+
+            ## Rules
+            - Comment only on changed lines.
+            - Prefer code suggestions with correct indentation/line numbers.
+            - Prioritize: Correctness, Security, Performance, Testing, Maintainability.
+            - Max 8 inline comments.
+
+            ## Steps
+            1) mcp__github__get_pull_request, get_pull_request_files, get_pull_request_diff
+            2) create pending review → add comments → submit (event="COMMENT") with a summary.
+
+      - name: Post final summary (safety fallback)
+        if: ${{ steps.gcli.outputs.summary != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+          printf '%s' "${{ steps.gcli.outputs.summary }}" | jq -Rs '{event:"COMMENT",body:.}' > review.json
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/pulls/$PR/reviews" \
+            -d @review.json
