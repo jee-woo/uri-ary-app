@@ -12,4 +12,4 @@ jobs:
     uses: ./.github/workflows/gemini-review.yml
     secrets: inherit # ✅ 시크릿 전달
     with:
-      additional_context: "Focus on security/performance, keep comments concise."
+      additional_context: "Focus on security/performance, keep comments concise. Comment in Korean language."

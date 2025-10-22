@@ -23,14 +23,15 @@ jobs:
         uses: google-github-actions/run-gemini-cli@v0
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }} # ✅ 인증 필수
+          gemini_debug: true # ✅ 디버그 활성화
           # GitHub MCP 서버를 도커로 띄우고 필요한 툴만 허용
           settings: |
             {
               "mcpServers": {
                 "github": {
                   "command": "docker",
-                  "args": ["run","-i","--rm","-e","GITHUB_PERSONAL_ACCESS_TOKEN","ghcr.io/github/github-mcp-server:latest"],
-                  "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${{ github.token }}" },
+                  "args": ["run","-i","--rm","-e","GITHUB_TOKEN","ghcr.io/github/github-mcp-server:latest"],
+                  "env": { "GITHUB_TOKEN": "${{ github.token }}" },
                   "includeTools": [
                     "get_pull_request",
                     "get_pull_request_files",
@@ -214,6 +215,11 @@ jobs:
             ## Final Instructions
 
             Remember, you are running in a virtual machine and no one reviewing your output. Your review must be posted to GitHub using the MCP tools to create a pending review, add comments to the pending review, and submit the pending review.
+
+      # ✅ 안전장치: 에이전트가 "__MCP_MISSING__"을 리턴했다면 코멘트 시도 금지
+      - name: Guard – skip posting if MCP missing
+        if: ${{ steps.gcli.outputs.text == '__MCP_MISSING__' }}
+        run: echo "MCP not available. Skipping comment fallback."
 
       - name: Post final summary (safety fallback)
         if: ${{ steps.gcli.outputs.summary != '' }}
