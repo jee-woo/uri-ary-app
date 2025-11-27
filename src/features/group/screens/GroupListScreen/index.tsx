@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useToastController } from "@tamagui/toast";
 import { useState } from "react";
 import { ScrollView } from "tamagui";
 
@@ -9,6 +9,7 @@ import JoinGroupSheet from "@/features/group/screens/GroupListScreen/components/
 import { RootStackParamList } from "@/types/navigation.types";
 import GroupActionSheet from "./components/GroupActionSheet";
 import GroupList from "./components/GroupList";
+import { useJoinGroupMutation } from "./hooks/mutations/useJoinGroupMutation";
 
 type GroupListScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -17,36 +18,26 @@ type GroupListScreenNavigationProp = NativeStackNavigationProp<
 
 export default function GroupListScreen() {
   const navigation = useNavigation<GroupListScreenNavigationProp>();
+  const toast = useToastController();
+
+  const joinGroupMutation = useJoinGroupMutation();
 
   const [isActionOpen, setActionOpen] = useState(false);
   const [isJoinOpen, setJoinOpen] = useState(false);
 
-  const handleJoinGroup = async (code: string) => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/groups/join`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ code }),
-        }
-      );
-
-      if (res.ok) {
-        alert("그룹에 참여했습니다!");
-        // refetch();
+  const handleJoinGroup = (code: string) => {
+    joinGroupMutation.mutate(code, {
+      onSuccess: () => {
+        toast.show("그룹에 참여했습니다!", { native: true });
         setJoinOpen(false);
-      } else {
-        alert("참여에 실패했습니다.");
-      }
-    } catch (e) {
-      console.error("그룹 참여 오류:", e);
-      alert("참여 중 오류가 발생했습니다.");
-    }
+      },
+      onError: (error) => {
+        toast.show("참여 중 오류가 발생했습니다.", {
+          native: true,
+          message: error.message,
+        });
+      },
+    });
   };
 
   return (
@@ -58,6 +49,7 @@ export default function GroupListScreen() {
         isOpen={isJoinOpen}
         onClose={() => setJoinOpen(false)}
         onJoin={handleJoinGroup}
+        isPending={joinGroupMutation.isPending}
       />
       <GroupActionSheet
         open={isActionOpen}
