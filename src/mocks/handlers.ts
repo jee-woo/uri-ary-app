@@ -114,6 +114,17 @@ for (const gd of Object.values(groupDetails)) {
 
 // ─────────────── Handlers ───────────────
 export const handlers = [
+  // 개발자 로그인
+  http.post("/api/dev/login", async () => {
+    const token = faker.string.uuid(); // Mock token
+    const user = {
+      id: faker.number.int(),
+      username: "devUser",
+      email: "dev@example.com",
+    };
+    return HttpResponse.json({ token, user }, { status: 200 });
+  }),
+
   // 그룹 리스트
   http.get("/api/groups/user", () => {
     return HttpResponse.json(groups);
