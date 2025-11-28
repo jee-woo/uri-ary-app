@@ -10,7 +10,7 @@ export default function CommentList({
   onReplyPress: (id: number, username: string, content: string) => void;
 }) {
   return (
-    <YStack gap={12} marginTop={24} flex={1}>
+    <YStack gap={12} marginTop={12} flex={1}>
       <Text fontSize="$4" fontWeight="600">
         댓글
       </Text>

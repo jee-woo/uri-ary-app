@@ -21,35 +21,54 @@ export default function CommentItem({
   onReplyPress: (id: number, username: string, content: string) => void;
 }) {
   return (
-    <YStack gap={4}>
-      <XStack alignItems="center" gap={6}>
-        <Text fontWeight="700">{comment.authorUsername}</Text>
-        <Text fontSize="$2" color="$colorPress">
-          {formatDate(comment.createdAt)}
-        </Text>
-      </XStack>
-
-      <Text fontSize="$4" lineHeight="$4">
-        {comment.content}
-      </Text>
-
-      {comment.parentId === null && (
-        <Pressable
-          onPress={() =>
-            onReplyPress(comment.id, comment.authorUsername, comment.content)
-          }
-          style={{
-            paddingVertical: 4,
-            alignSelf: "flex-start",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <MessageCircle size={16} color="#888" />
-          <Text fontSize="$2" marginLeft={4} color="#888">
-            답글
+    <YStack gap={8}>
+      <YStack gap={4}>
+        <XStack alignItems="center" gap={6}>
+          <Text fontWeight="700">{comment.authorUsername}</Text>
+          <Text fontSize="$2" color="$colorPress">
+            {formatDate(comment.createdAt)}
           </Text>
-        </Pressable>
+        </XStack>
+
+        <Text fontSize="$4" lineHeight="$4">
+          {comment.parentAuthorUsername && (
+            <Text fontWeight="bold" color="$blue10">
+              @{comment.parentAuthorUsername}{" "}
+            </Text>
+          )}
+          {comment.content}
+        </Text>
+
+        {comment.parentId === null && (
+          <Pressable
+            onPress={() =>
+              onReplyPress(comment.id, comment.authorUsername, comment.content)
+            }
+            style={{
+              paddingVertical: 4,
+              alignSelf: "flex-start",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <MessageCircle size={16} color="#888" />
+            <Text fontSize="$2" marginLeft={4} color="#888">
+              답글
+            </Text>
+          </Pressable>
+        )}
+      </YStack>
+
+      {comment.children && comment.children.length > 0 && (
+        <YStack gap={16} paddingLeft={20}>
+          {comment.children.map((child) => (
+            <CommentItem
+              key={child.id}
+              comment={child}
+              onReplyPress={onReplyPress}
+            />
+          ))}
+        </YStack>
       )}
     </YStack>
   );
