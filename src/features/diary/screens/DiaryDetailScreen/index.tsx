@@ -1,7 +1,7 @@
 import KeyboardAvoidingWrapper from "@/components/KeyboardAvoidingWrapper";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import { ScrollView, Text, YStack } from "tamagui";
+import { Text, YStack } from "tamagui";
 import CommentForm from "./components/CommentForm";
 import CommentList from "./components/CommentList";
 import { DiaryContent } from "./components/DiaryContent";
@@ -32,22 +32,15 @@ export default function DiaryDetailScreen() {
   return (
     <KeyboardAvoidingWrapper>
       <YStack flex={1} backgroundColor="$background">
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{ padding: 20, paddingBottom: 80 }}
-        >
-          <DiaryContent diary={diary} />
-
-          <CommentList
-            commentTree={commentTree}
-            onReplyPress={(id, username, content) => {
-              setReplyParentId(id);
-              setReplyUsername(username);
-              setReplyContent(content);
-            }}
-          />
-        </ScrollView>
-
+        <DiaryContent diary={diary} />
+        <CommentList
+          commentTree={commentTree}
+          onReplyPress={(id, username, content) => {
+            setReplyParentId(id);
+            setReplyUsername(username);
+            setReplyContent(content);
+          }}
+        />
         <YStack
           padding={12}
           borderTopWidth={1}

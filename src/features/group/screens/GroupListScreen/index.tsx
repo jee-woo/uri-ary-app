@@ -41,7 +41,7 @@ export default function GroupListScreen() {
   };
 
   return (
-    <ScrollView>
+    <>
       <GroupListHeader onActionPress={() => setActionOpen(true)} />
       <GroupList />
       {/* ✅ 그룹 참여 시트 */}
@@ -63,6 +63,6 @@ export default function GroupListScreen() {
           setJoinOpen(true);
         }}
       />
-    </ScrollView>
+    </>
   );
 }
