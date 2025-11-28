@@ -1,17 +1,8 @@
 import { NestedComment } from "@/features/diary/types/diary.types";
+import { formatRelativeTime } from "@/utils/formatDate";
 import { MessageCircle } from "lucide-react-native";
 import { Pressable } from "react-native";
 import { Text, XStack, YStack, useTheme } from "tamagui";
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}.${String(date.getDate()).padStart(2, "0")} ${String(
-    date.getHours()
-  ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-}
 
 export default function CommentItem({
   comment,
@@ -31,7 +22,7 @@ export default function CommentItem({
           </Text>
         </XStack>
         <Text fontSize="$2" color="$gray9">
-          {formatDate(comment.createdAt)}
+          {formatRelativeTime(comment.createdAt)}
         </Text>
       </XStack>
 
