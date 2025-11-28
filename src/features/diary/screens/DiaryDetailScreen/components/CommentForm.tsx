@@ -59,14 +59,19 @@ export default function CommentForm({
   }, [isReplying]);
 
   return (
-    <YStack gap={8}>
+    <YStack gap={10}>
       {isReplying && (
-        <YStack gap={4}>
+        <YStack gap={4} padding={8} backgroundColor="$gray2" borderRadius={8}>
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$3" color="$colorPress">
+            <Text fontSize="$3" color="$gray10">
               {parentUsername ?? "작성자"}님에게 답글 작성 중...
             </Text>
-            <Button size="$2" variant="outlined" onPress={handleCancel}>
+            <Button
+              size="$2"
+              variant="outlined"
+              onPress={handleCancel}
+              chromeless
+            >
               취소
             </Button>
           </XStack>
@@ -74,7 +79,7 @@ export default function CommentForm({
           {parentContent && (
             <Text
               fontSize="$3"
-              color="$black8"
+              color="$gray9"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -84,7 +89,7 @@ export default function CommentForm({
         </YStack>
       )}
 
-      <XStack gap={8} alignItems="flex-start">
+      <XStack gap={8} alignItems="flex-end">
         <Input
           ref={inputRef}
           placeholder={isReplying ? "답글을 입력하세요" : "댓글을 입력하세요"}
@@ -92,13 +97,26 @@ export default function CommentForm({
           onChangeText={setContent}
           multiline
           flex={1}
+          minHeight={40}
+          maxHeight={100}
+          borderRadius={20}
+          paddingHorizontal={15}
+          paddingVertical={10}
+          borderColor="$gray6"
+          focusStyle={{ borderColor: "$blue8" }}
         />
 
         <Button
-          size="$3"
+          size="$4"
           onPress={handleSubmit}
           disabled={!content.trim() || isPending}
           alignSelf="stretch"
+          borderRadius={20}
+          minWidth={60}
+          backgroundColor="$blue9"
+          color="$white"
+          hoverStyle={{ backgroundColor: "$blue10" }}
+          pressStyle={{ backgroundColor: "$blue8" }}
         >
           등록
         </Button>
