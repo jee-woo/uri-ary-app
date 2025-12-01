@@ -39,12 +39,13 @@ export default function InviteCodeSheet({
               editable={false}
               textAlign="center"
               flex={1}
+              color="$color"
             />
             <Button
               size="$3"
               icon={Copy}
               onPress={copyToClipboard}
-              backgroundColor="$accent10"
+              backgroundColor="$accent1"
               color="white"
             />
           </XStack>

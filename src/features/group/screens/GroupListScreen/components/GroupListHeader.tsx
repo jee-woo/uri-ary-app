@@ -1,5 +1,5 @@
 import { Plus, Settings } from "lucide-react-native";
-import { Button, Text, XStack } from "tamagui";
+import { Button, Text, useTheme, XStack } from "tamagui";
 
 export default function GroupListHeader({
   onActionPress,
@@ -8,6 +8,7 @@ export default function GroupListHeader({
   onActionPress: () => void;
   onSettingPress: () => void;
 }) {
+  const theme = useTheme();
   return (
     <XStack
       justifyContent="space-between"
@@ -20,12 +21,16 @@ export default function GroupListHeader({
       <Text fontSize="$7" fontWeight="700">
         내 그룹
       </Text>
-      <XStack>
-        <Button size="$3" icon={Settings} onPress={onSettingPress} />
+      <XStack gap={8}>
         <Button
           size="$3"
-          // backgroundColor="$accent10"
-          // color="white"
+          icon={<Settings color={theme.accent1.val} />}
+          onPress={onSettingPress}
+        />
+        <Button
+          size="$3"
+          backgroundColor="$accent1"
+          color="white"
           icon={Plus}
           onPress={onActionPress}
         />
