@@ -8,6 +8,8 @@ import { z } from "zod";
 
 import { RootStackParamList } from "@/types/navigation.types";
 
+import { createGroup } from "./services/api";
+
 const groupSchema = z.object({
   name: z.string().min(1, "그룹 이름을 입력해주세요"),
 });
@@ -34,24 +36,7 @@ export default function GroupCreateScreen() {
 
   const onSubmit = async (data: GroupForm) => {
     try {
-      const token = await AsyncStorage.getItem("token");
-      const res = await fetch(
-        `${process.env.EXPO_PUBLIC_API_BASE_URL}/api/groups`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ name: data.name }),
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("그룹 생성 실패");
-      }
-
-      const group = await res.json();
+      const group = await createGroup(data.name);
       alert("그룹이 생성되었습니다!");
       navigation.navigate("Group", { groupId: group.id });
     } catch (e) {
