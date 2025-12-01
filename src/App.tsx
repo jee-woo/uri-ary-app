@@ -20,7 +20,13 @@ import { config } from "../tamagui.config";
 
 const Stack = createNativeStackNavigator();
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 60 * 1000,
+    },
+  },
+});
 
 const linking = {
   prefixes: [Platform.OS === "web" ? window.location.origin : "uriary://"],
