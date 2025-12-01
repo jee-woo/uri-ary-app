@@ -1,11 +1,13 @@
 import { registerRootComponent } from "expo";
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 import App from "./src/App";
-import { worker } from "./src/mocks/browser";
 
 const isMock = Constants.expoConfig?.extra?.eas?.mock === "1";
+const isWeb = Platform.OS === "web";
 
-if (isMock) {
+if (isMock && isWeb) {
+  const { worker } = require("./src/mocks/browser");
   worker.start().then(() => {
     registerRootComponent(App);
   });
