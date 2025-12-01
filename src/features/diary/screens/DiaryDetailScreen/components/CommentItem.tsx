@@ -21,12 +21,14 @@ export default function CommentItem({
             {comment.authorUsername}
           </Text>
         </XStack>
-        <Text color="$color11">{formatRelativeTime(comment.createdAt)}</Text>
+        <Text color="$color11" fontSize={"$2"}>
+          {formatRelativeTime(comment.createdAt)}
+        </Text>
       </XStack>
 
       <Text fontSize="$4" lineHeight="$4" paddingLeft={2}>
         {comment.parentAuthorUsername && (
-          <Text fontWeight="bold" color="$accent10">
+          <Text fontWeight="bold" color="$accent1">
             @{comment.parentAuthorUsername}{" "}
           </Text>
         )}

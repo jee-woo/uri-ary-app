@@ -1,4 +1,5 @@
 import { RootStackParamList } from "@/types/navigation.types";
+import { formatRelativeTime } from "@/utils/formatDate";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Card, Image, Text, View, XStack, YStack, styled } from "tamagui";
@@ -36,7 +37,7 @@ export default function DiarySpringItem({
 }: DiarySpringItemProps) {
   const navigation = useNavigation<NavigationProp>();
 
-  const connectionOverlap = 4;
+  const connectionOverlap = 1;
   const marginForConnection = 5;
 
   return (
@@ -66,7 +67,7 @@ export default function DiarySpringItem({
         shadowRadius={4}
         shadowOpacity={0.2}
         width="100%"
-        zIndex={1}
+        zIndex={2}
         marginVertical={marginForConnection}
       >
         <YStack gap={8}>
@@ -82,10 +83,11 @@ export default function DiarySpringItem({
               {diary.authorUsername}
             </Text>
             <Text fontSize="$2" color="$colorPress">
-              {new Date(diary.createdAt).toLocaleTimeString([], {
+              {/* {new Date(diary.createdAt).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-              })}
+              })} */}
+              {formatRelativeTime(diary.createdAt)}
             </Text>
           </XStack>
 

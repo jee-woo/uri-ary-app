@@ -2,7 +2,7 @@ import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import { NestedComment } from "@/features/diary/types/diary.types";
 import { MessageSquareText } from "lucide-react-native";
 import { FlatList } from "react-native";
-import { Text, YStack } from "tamagui";
+import { Text, YStack, useTheme } from "tamagui";
 import CommentItem from "./CommentItem";
 
 export default function CommentList({
@@ -12,6 +12,7 @@ export default function CommentList({
   commentTree: NestedComment[];
   onReplyPress: (id: number, username: string, content: string) => void;
 }) {
+  const theme = useTheme();
   const renderComment = ({ item }: { item: NestedComment }) => (
     <CommentItem comment={item} onReplyPress={onReplyPress} />
   );
@@ -24,7 +25,7 @@ export default function CommentList({
 
       {commentTree.length === 0 ? (
         <EmptyPlaceholder
-          icon={<MessageSquareText size={48} color="$color8" />}
+          icon={<MessageSquareText size={48} color={theme.color8.val} />}
           title="아직 댓글이 없습니다"
           message="첫 댓글을 남겨보세요!"
         />
