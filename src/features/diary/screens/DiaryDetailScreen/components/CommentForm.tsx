@@ -99,7 +99,6 @@ export default function CommentForm({
           flex={1}
           minHeight={40}
           maxHeight={100}
-          borderRadius={20}
           paddingHorizontal={15}
           paddingVertical={10}
           borderColor="$color6"
@@ -111,7 +110,6 @@ export default function CommentForm({
           onPress={handleSubmit}
           disabled={!content.trim() || isPending}
           alignSelf="stretch"
-          borderRadius={20}
           minWidth={60}
           backgroundColor="$accent1"
           color="white"

@@ -1,19 +1,11 @@
 import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import { Group } from "@/features/group/types/group.types";
-import { RootStackParamList } from "@/types/navigation.types";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react-native";
 import { FlatList } from "react-native";
 import { useTheme } from "tamagui";
 import { fetchGroups } from "../services/api";
 import GroupCard from "./GroupCard";
-
-type GroupListScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "Group"
->;
 
 const GroupList = () => {
   const {
@@ -23,7 +15,6 @@ const GroupList = () => {
     refetch,
   } = useQuery<Group[]>({ queryKey: ["groups"], queryFn: fetchGroups });
 
-  const navigation = useNavigation<GroupListScreenNavigationProp>();
   const theme = useTheme();
 
   if (isLoading) {
@@ -33,7 +24,7 @@ const GroupList = () => {
   if (isError) {
     return (
       <EmptyPlaceholder
-        icon={<Users size={48} />}
+        icon={<Users size={48} color={theme.color8.val} />}
         title="오류 발생"
         message="그룹을 불러오는 데 실패했습니다."
       />
