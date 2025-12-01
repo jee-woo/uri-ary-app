@@ -1,5 +1,5 @@
-import { YStack, Text } from 'tamagui';
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
+import { Text, YStack } from "tamagui";
 
 interface EmptyPlaceholderProps {
   icon: ReactNode;
@@ -22,10 +22,10 @@ export default function EmptyPlaceholder({
     >
       {icon}
       <YStack gap={4} alignItems="center">
-        <Text fontSize="$6" fontWeight="bold" color="$gray10">
+        <Text fontSize="$6" fontWeight="bold" color="$color12">
           {title}
         </Text>
-        <Text fontSize="$4" color="$gray9" textAlign="center">
+        <Text fontSize="$4" color="$color11" textAlign="center">
           {message}
         </Text>
       </YStack>

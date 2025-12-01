@@ -34,7 +34,7 @@ export default function GroupDetailHeader({
             size="$3"
             icon={UserPlus}
             onPress={() => setOpen(true)}
-            backgroundColor="$blue10"
+            backgroundColor="$accent1"
             color="white"
           />
         </XStack>

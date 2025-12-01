@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { Users } from "lucide-react-native";
 import { FlatList } from "react-native";
+import { useTheme } from "tamagui";
 import { fetchGroups } from "../services/api";
 import GroupCard from "./GroupCard";
 
@@ -23,6 +24,7 @@ const GroupList = () => {
   } = useQuery<Group[]>({ queryKey: ["groups"], queryFn: fetchGroups });
 
   const navigation = useNavigation<GroupListScreenNavigationProp>();
+  const theme = useTheme();
 
   if (isLoading) {
     return null; // 로딩 중에는 아무것도 표시하지 않음
@@ -31,7 +33,7 @@ const GroupList = () => {
   if (isError) {
     return (
       <EmptyPlaceholder
-        icon={<Users size={48} color="$gray8" />}
+        icon={<Users size={48} />}
         title="오류 발생"
         message="그룹을 불러오는 데 실패했습니다."
       />
@@ -41,7 +43,7 @@ const GroupList = () => {
   if (!groups || groups.length === 0) {
     return (
       <EmptyPlaceholder
-        icon={<Users size={48} color="$gray8" />}
+        icon={<Users size={48} color={theme.color8.val} />}
         title="참여 중인 그룹이 없습니다"
         message="새로운 그룹을 만들거나 기존 그룹에 참여해보세요."
       />

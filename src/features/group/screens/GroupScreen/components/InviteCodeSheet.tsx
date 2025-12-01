@@ -44,7 +44,7 @@ export default function InviteCodeSheet({
               size="$3"
               icon={Copy}
               onPress={copyToClipboard}
-              backgroundColor="$blue10"
+              backgroundColor="$accent10"
               color="white"
             />
           </XStack>

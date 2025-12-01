@@ -61,9 +61,9 @@ export default function CommentForm({
   return (
     <YStack gap={10}>
       {isReplying && (
-        <YStack gap={4} padding={8} backgroundColor="$gray2" borderRadius={8}>
+        <YStack gap={4} padding={8} backgroundColor="$color2" borderRadius={8}>
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$3" color="$gray10">
+            <Text fontSize="$3" color="$color12">
               {parentUsername ?? "작성자"}님에게 답글 작성 중...
             </Text>
             <Button
@@ -79,7 +79,7 @@ export default function CommentForm({
           {parentContent && (
             <Text
               fontSize="$3"
-              color="$gray9"
+              color="$color11"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -102,8 +102,8 @@ export default function CommentForm({
           borderRadius={20}
           paddingHorizontal={15}
           paddingVertical={10}
-          borderColor="$gray6"
-          focusStyle={{ borderColor: "$blue8" }}
+          borderColor="$color6"
+          focusStyle={{ borderColor: "$accent8" }}
         />
 
         <Button
@@ -113,10 +113,10 @@ export default function CommentForm({
           alignSelf="stretch"
           borderRadius={20}
           minWidth={60}
-          backgroundColor="$blue9"
+          backgroundColor="$accent9"
           color="$white"
-          hoverStyle={{ backgroundColor: "$blue10" }}
-          pressStyle={{ backgroundColor: "$blue8" }}
+          hoverStyle={{ backgroundColor: "$accent10" }}
+          pressStyle={{ backgroundColor: "$accent8" }}
         >
           등록
         </Button>

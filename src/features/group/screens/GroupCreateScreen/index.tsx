@@ -82,7 +82,7 @@ export default function GroupCreateScreen() {
         <Button
           onPress={handleSubmit(onSubmit)}
           disabled={isSubmitting}
-          backgroundColor="$blue10"
+          backgroundColor="$accent10"
           color="white"
         >
           {isSubmitting ? <Spinner size="small" /> : "생성하기"}

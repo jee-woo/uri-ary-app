@@ -24,7 +24,7 @@ export default function CommentList({
 
       {commentTree.length === 0 ? (
         <EmptyPlaceholder
-          icon={<MessageSquareText size={48} color="$gray8" />}
+          icon={<MessageSquareText size={48} color="$color8" />}
           title="아직 댓글이 없습니다"
           message="첫 댓글을 남겨보세요!"
         />

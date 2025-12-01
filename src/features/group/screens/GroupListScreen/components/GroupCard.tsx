@@ -27,7 +27,7 @@ export default function GroupCard({ id, name }: GroupCardProps) {
         <H2 size="$6">{name}</H2>
       </Card.Header>
       <Card.Footer padded>
-        <Paragraph size="$3" color="$black8"></Paragraph>
+        <Paragraph size="$3" color="$color8"></Paragraph>
       </Card.Footer>
     </Card>
   );

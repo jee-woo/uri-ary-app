@@ -21,14 +21,12 @@ export default function CommentItem({
             {comment.authorUsername}
           </Text>
         </XStack>
-        <Text fontSize="$2" color="$gray9">
-          {formatRelativeTime(comment.createdAt)}
-        </Text>
+        <Text color="$color11">{formatRelativeTime(comment.createdAt)}</Text>
       </XStack>
 
       <Text fontSize="$4" lineHeight="$4" paddingLeft={2}>
         {comment.parentAuthorUsername && (
-          <Text fontWeight="bold" color="$blue10">
+          <Text fontWeight="bold" color="$accent10">
             @{comment.parentAuthorUsername}{" "}
           </Text>
         )}
@@ -47,8 +45,8 @@ export default function CommentItem({
             alignItems: "center",
           }}
         >
-          <MessageCircle size={14} color={theme.gray9?.val} />
-          <Text fontSize="$2" marginLeft={4} color="$gray9">
+          <MessageCircle size={14} color={theme.color9?.val} />
+          <Text fontSize="$2" marginLeft={4} color="$color11">
             답글
           </Text>
         </Pressable>

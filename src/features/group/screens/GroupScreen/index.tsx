@@ -6,7 +6,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { BookHeart } from "lucide-react-native";
 import { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";
-import { Text, YStack } from "tamagui";
+import { Text, YStack, useTheme } from "tamagui";
 import { Diary, GroupDetail } from "../../types/group.types";
 import DiarySpringItem from "./components/DiarySpringItem";
 import GroupDetailHeader from "./components/GroupDetailHeader";
@@ -22,6 +22,7 @@ export default function GroupScreen() {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute();
   const { groupId } = route.params as { groupId: string };
+  const theme = useTheme();
 
   const { data: group } = useSuspenseQuery<GroupDetail>({
     queryKey: ["group", groupId],
@@ -69,7 +70,7 @@ export default function GroupScreen() {
 
       {!group.diaries || group.diaries.length === 0 ? (
         <EmptyPlaceholder
-          icon={<BookHeart size={48} color="$gray8" />}
+          icon={<BookHeart size={48} color={theme.color8.val} />}
           title="아직 작성된 일기가 없습니다"
           message="첫 일기를 작성하고 감정을 공유해보세요."
         />
