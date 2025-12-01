@@ -1,8 +1,9 @@
+import { baseUrl } from "@/constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_BASE_URL,
+  baseURL: baseUrl,
   headers: {
     "ngrok-skip-browser-warning": "true",
   },
