@@ -1,7 +1,9 @@
+import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import { RootStackParamList } from "@/types/navigation.types";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { BookHeart } from "lucide-react-native";
 import { useCallback, useMemo } from "react";
 import { SectionList } from "react-native";
 import { Text, YStack } from "tamagui";
@@ -27,6 +29,7 @@ export default function GroupScreen() {
   });
 
   const sections = useMemo(() => {
+    if (!group.diaries) return [];
     const groupedDiaries = groupByDate(group.diaries);
     return Object.entries(groupedDiaries).map(([dateLabel, diaries]) => ({
       title: dateLabel,
@@ -55,9 +58,7 @@ export default function GroupScreen() {
   );
 
   return (
-    // 1. 전체를 YStack으로 감싸서 헤더와 리스트를 분리합니다.
     <YStack flex={1}>
-      {/* 2. 헤더 컴포넌트를 SectionList 밖으로 꺼냅니다. */}
       <GroupDetailHeader
         title={group.name}
         onActionPress={() =>
@@ -66,21 +67,26 @@ export default function GroupScreen() {
         inviteCode={group.code}
       />
 
-      <SectionList
-        sections={sections}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderDiaryItem}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text fontSize="$5" fontWeight="700" paddingVertical={8}>
-            {title}
-          </Text>
-        )}
-        // 3. ListHeaderComponent prop은 더 이상 필요 없으므로 제거합니다.
-        // 4. contentContainerStyle에 paddingHorizontal을 적용해
-        //    목록 부분에만 좌우 패딩을 줍니다.
-        contentContainerStyle={{ paddingBottom: 16, paddingHorizontal: 16 }}
-        ItemSeparatorComponent={() => <YStack />}
-      />
+      {!group.diaries || group.diaries.length === 0 ? (
+        <EmptyPlaceholder
+          icon={<BookHeart size={48} color="$gray8" />}
+          title="아직 작성된 일기가 없습니다"
+          message="첫 일기를 작성하고 감정을 공유해보세요."
+        />
+      ) : (
+        <SectionList
+          sections={sections}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderDiaryItem}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text fontSize="$5" fontWeight="700" paddingVertical={8}>
+              {title}
+            </Text>
+          )}
+          contentContainerStyle={{ paddingBottom: 16, paddingHorizontal: 16 }}
+          ItemSeparatorComponent={() => <YStack />}
+        />
+      )}
     </YStack>
   );
 }

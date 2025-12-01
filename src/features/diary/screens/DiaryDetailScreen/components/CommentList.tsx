@@ -1,4 +1,6 @@
+import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import { NestedComment } from "@/features/diary/types/diary.types";
+import { MessageSquareText } from "lucide-react-native";
 import { FlatList } from "react-native";
 import { Text, YStack } from "tamagui";
 import CommentItem from "./CommentItem";
@@ -21,9 +23,11 @@ export default function CommentList({
       </Text>
 
       {commentTree.length === 0 ? (
-        <Text color="$gray10" fontSize="$4" textAlign="center" paddingVertical={40}>
-          아직 댓글이 없습니다. 첫 댓글을 남겨보세요!
-        </Text>
+        <EmptyPlaceholder
+          icon={<MessageSquareText size={48} color="$gray8" />}
+          title="아직 댓글이 없습니다"
+          message="첫 댓글을 남겨보세요!"
+        />
       ) : (
         <FlatList
           data={commentTree}
