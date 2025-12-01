@@ -13,7 +13,7 @@ import { useJoinGroupMutation } from "./hooks/mutations/useJoinGroupMutation";
 
 type GroupListScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "Group"
+  "Group" | "Setting"
 >;
 
 export default function GroupListScreen() {
@@ -42,7 +42,10 @@ export default function GroupListScreen() {
 
   return (
     <>
-      <GroupListHeader onActionPress={() => setActionOpen(true)} />
+      <GroupListHeader
+        onActionPress={() => setActionOpen(true)}
+        onSettingPress={() => navigation.navigate("Setting")}
+      />
       <GroupList />
       {/* ✅ 그룹 참여 시트 */}
       <JoinGroupSheet
