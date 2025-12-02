@@ -4,7 +4,7 @@ import apiClient from "@/services/apiClient";
 /**
  * ✅ 일기 상세 조회 API (axios 버전)
  * @param groupId 그룹 ID
- * @param diaryId 다이어리 ID
+ * @param diaryId 일기 ID
  */
 export async function fetchDiaryDetail(
   groupId: string,

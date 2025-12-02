@@ -26,7 +26,7 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
       },
       {
         onSuccess: () => {
-          toast.show("다이어리 작성 완료!", { native: true });
+          toast.show("일기 작성 완료!", { native: true });
           navigation.reset({
             index: 0,
             routes: [{ name: "Group", params: { groupId } }],
@@ -41,16 +41,17 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
   };
 
   return (
-    <YStack gap={12}>
+    <YStack gap={12} flex={1}>
       <Controller
         control={control}
         name="content"
         render={({ field: { value, onChange } }) => (
           <TextArea
-            placeholder="내용을 입력하세요"
+            placeholder="공유하고 싶은 하루를 작성해보세요."
             value={value}
             onChangeText={onChange}
-            numberOfLines={5}
+            textAlignVertical="top"
+            flex={1}
           />
         )}
       />
