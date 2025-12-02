@@ -102,7 +102,7 @@ export default function CommentForm({
           paddingHorizontal={15}
           paddingVertical={10}
           borderColor="$color6"
-          focusStyle={{ borderColor: "$accent10" }}
+          focusStyle={{ borderColor: "$accent1" }}
         />
 
         <Button
@@ -113,8 +113,7 @@ export default function CommentForm({
           minWidth={60}
           backgroundColor="$accent1"
           color="white"
-          hoverStyle={{ backgroundColor: "$accent1" }}
-          pressStyle={{ backgroundColor: "$accent10" }}
+          disabledStyle={{ backgroundColor: "$color5" }}
         >
           등록
         </Button>

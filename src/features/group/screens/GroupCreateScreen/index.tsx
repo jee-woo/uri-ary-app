@@ -11,7 +11,7 @@ import CommonHeader from "@/components/CommonHeader";
 import { createGroup } from "./services/api";
 
 const groupSchema = z.object({
-  name: z.string().min(1, "그룹 이름을 입력해주세요"),
+  name: z.string().min(1).max(20, "그룹 이름은 20자 이내로 입력해주세요."),
 });
 type GroupForm = z.infer<typeof groupSchema>;
 
@@ -26,12 +26,13 @@ export default function GroupCreateScreen() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<GroupForm>({
     resolver: zodResolver(groupSchema),
     defaultValues: {
       name: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (data: GroupForm) => {
@@ -60,13 +61,18 @@ export default function GroupCreateScreen() {
             />
           )}
         />
-        {errors.name && <Text color="red">{errors.name.message}</Text>}
+        {errors.name && errors.name.type === "too_big" && (
+          <Text fontSize={12} color="red">
+            {errors.name.message}
+          </Text>
+        )}
 
         <Button
           onPress={handleSubmit(onSubmit)}
-          disabled={isSubmitting}
+          disabled={isSubmitting || !isValid}
           backgroundColor="$accent1"
           color="white"
+          disabledStyle={{ backgroundColor: "$color5" }}
         >
           {isSubmitting ? <Spinner size="small" /> : "생성하기"}
         </Button>

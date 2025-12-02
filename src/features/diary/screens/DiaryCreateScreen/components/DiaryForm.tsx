@@ -58,7 +58,13 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
         <Text color="red">{formState.errors.content.message}</Text>
       )}
 
-      <Button disabled={isPending} onPress={handleSubmit(onSubmit)}>
+      <Button
+        disabled={isPending || !formState.isValid}
+        onPress={handleSubmit(onSubmit)}
+        backgroundColor="$accent1"
+        color="white"
+        disabledStyle={{ backgroundColor: "$color5" }}
+      >
         {isPending ? <Spinner size="small" /> : "작성하기"}
       </Button>
     </YStack>
