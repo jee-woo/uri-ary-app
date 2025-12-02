@@ -39,6 +39,7 @@ export default function CommentForm({
           toast.show("댓글 등록 완료!", { native: true });
           setContent("");
           onReset();
+          inputRef.current?.blur();
         },
         onError: () => {
           toast.show("댓글 등록 실패", { native: true });
