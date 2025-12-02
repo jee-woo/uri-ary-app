@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Input, ScrollView, Spinner, Text, YStack } from "tamagui";
+import { Button, H4, Input, ScrollView, Spinner, Text, YStack } from "tamagui";
 import { z } from "zod";
 
 import { RootStackParamList } from "@/types/navigation.types";
 
+import CommonHeader from "@/components/CommonHeader";
 import { createGroup } from "./services/api";
 
 const groupSchema = z.object({
@@ -47,10 +47,8 @@ export default function GroupCreateScreen() {
 
   return (
     <ScrollView>
+      <CommonHeader center={<H4>그룹 생성하기</H4>} />
       <YStack flex={1} padding={16} gap={12} justifyContent="center">
-        <Text fontSize="$7" fontWeight="600">
-          그룹 만들기
-        </Text>
         <Controller
           control={control}
           name="name"

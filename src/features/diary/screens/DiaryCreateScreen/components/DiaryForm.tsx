@@ -32,7 +32,8 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
             routes: [{ name: "Group", params: { groupId } }],
           });
         },
-        onError: () => {
+        onError: (e) => {
+          console.error(e);
           toast.show("작성 실패. 다시 시도해주세요.", { native: true });
         },
       }

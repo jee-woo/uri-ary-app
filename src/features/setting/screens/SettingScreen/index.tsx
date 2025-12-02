@@ -1,7 +1,8 @@
+import CommonHeader from "@/components/CommonHeader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Button, YStack } from "tamagui";
+import { Button, H4, YStack } from "tamagui";
 
 import { RootStackParamList } from "@/types/navigation.types";
 
@@ -22,8 +23,11 @@ export default function SettingScreen() {
   };
 
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" space>
-      <Button onPress={handleLogout}>로그아웃</Button>
+    <YStack flex={1}>
+      <CommonHeader center={<H4>설정</H4>} />
+      <YStack flex={1} justifyContent="center" alignItems="center" space>
+        <Button onPress={handleLogout}>로그아웃</Button>
+      </YStack>
     </YStack>
   );
 }

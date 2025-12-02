@@ -35,7 +35,6 @@ export default function CommentList({
           renderItem={renderComment}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ gap: 24 }}
-          scrollEnabled={false} // This FlatList is inside a ScrollView, so disable its scrolling
         />
       )}
     </YStack>

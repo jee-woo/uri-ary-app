@@ -1,7 +1,9 @@
+import CommonHeader from "@/components/CommonHeader";
 import KeyboardAvoidingWrapper from "@/components/KeyboardAvoidingWrapper";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import { ScrollView, Separator, Text, YStack } from "tamagui";
+import { ScrollView } from "react-native";
+import { Separator, Text, YStack } from "tamagui";
 import CommentForm from "./components/CommentForm";
 import CommentList from "./components/CommentList";
 import { DiaryContent } from "./components/DiaryContent";
@@ -32,6 +34,7 @@ export default function DiaryDetailScreen() {
   return (
     <KeyboardAvoidingWrapper>
       <YStack flex={1} backgroundColor="$background">
+        <CommonHeader />
         <ScrollView>
           <YStack paddingHorizontal={20} paddingVertical={24}>
             <DiaryContent diary={diary} />

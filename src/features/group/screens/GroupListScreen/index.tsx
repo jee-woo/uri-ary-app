@@ -2,13 +2,12 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useToastController } from "@tamagui/toast";
 import { useState } from "react";
-import { ScrollView } from "tamagui";
 
-import GroupListHeader from "@/features/group/screens/GroupListScreen/components/GroupListHeader";
 import JoinGroupSheet from "@/features/group/screens/GroupListScreen/components/JoinGroupSheet";
 import { RootStackParamList } from "@/types/navigation.types";
 import GroupActionSheet from "./components/GroupActionSheet";
 import GroupList from "./components/GroupList";
+import GroupListHeader from "./components/GroupListHeader";
 import { useJoinGroupMutation } from "./hooks/mutations/useJoinGroupMutation";
 
 type GroupListScreenNavigationProp = NativeStackNavigationProp<

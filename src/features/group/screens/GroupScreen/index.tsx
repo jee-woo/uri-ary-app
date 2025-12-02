@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { BookHeart } from "lucide-react-native";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { SectionList } from "react-native";
 import { Text, YStack, useTheme } from "tamagui";
 import { Diary, GroupDetail } from "../../types/group.types";
@@ -23,6 +23,7 @@ export default function GroupScreen() {
   const route = useRoute();
   const { groupId } = route.params as { groupId: string };
   const theme = useTheme();
+  const [isInviteSheetOpen, setInviteSheetOpen] = useState(false);
 
   const { data: group } = useSuspenseQuery<GroupDetail>({
     queryKey: ["group", groupId],
@@ -61,11 +62,10 @@ export default function GroupScreen() {
   return (
     <YStack flex={1}>
       <GroupDetailHeader
-        title={group.name}
         onActionPress={() =>
           navigation.navigate("DiaryCreate", { groupId: Number(groupId) })
         }
-        inviteCode={group.code}
+        group={group}
       />
 
       {!group.diaries || group.diaries.length === 0 ? (

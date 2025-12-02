@@ -1,5 +1,6 @@
+import CommonHeader from "@/components/CommonHeader";
 import { Plus, Settings } from "lucide-react-native";
-import { Button, Text, useTheme, XStack } from "tamagui";
+import { Button, H4, XStack } from "tamagui";
 
 export default function GroupListHeader({
   onActionPress,
@@ -8,33 +9,37 @@ export default function GroupListHeader({
   onActionPress: () => void;
   onSettingPress: () => void;
 }) {
-  const theme = useTheme();
   return (
-    <XStack
-      justifyContent="space-between"
-      alignItems="center"
-      paddingHorizontal={16}
-      paddingVertical={12}
-      borderBottomWidth={1}
-      borderBottomColor="$borderColor"
-    >
-      <Text fontSize="$7" fontWeight="700">
-        내 그룹
-      </Text>
-      <XStack gap={8}>
-        <Button
-          size="$3"
-          icon={<Settings color={theme.accent1.val} />}
-          onPress={onSettingPress}
-        />
-        <Button
-          size="$3"
-          backgroundColor="$accent1"
-          color="white"
-          icon={Plus}
-          onPress={onActionPress}
-        />
-      </XStack>
-    </XStack>
+    <CommonHeader
+      left={<H4>내 그룹</H4>}
+      right={
+        <XStack>
+          <Button
+            icon={Settings}
+            onPress={onSettingPress}
+            chromeless
+            padding={"$2"}
+            pressStyle={{
+              scale: 0.9,
+              opacity: 0.7,
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+            }}
+          />
+          <Button
+            icon={Plus}
+            onPress={onActionPress}
+            chromeless
+            padding={"$2"}
+            pressStyle={{
+              scale: 0.9,
+              opacity: 0.7,
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+            }}
+          />
+        </XStack>
+      }
+    />
   );
 }

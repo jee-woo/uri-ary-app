@@ -1,55 +1,59 @@
+import CommonHeader from "@/components/CommonHeader";
 import { CurrentToast } from "@/components/CurrentToast";
+import { GroupDetail } from "@/features/group/types/group.types";
 import { Plus, UserPlus } from "lucide-react-native";
 import { useState } from "react";
-import { Button, Text, useTheme, XStack } from "tamagui";
+import { Button, H4, useTheme, XStack } from "tamagui";
 import InviteCodeSheet from "./InviteCodeSheet";
 
 export default function GroupDetailHeader({
-  title,
   onActionPress,
-  inviteCode,
+  group,
 }: {
-  title: string;
   onActionPress: () => void;
-  inviteCode: string;
+  group: GroupDetail;
 }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
 
   return (
     <>
-      <XStack
-        justifyContent="space-between"
-        alignItems="center"
-        paddingHorizontal={16}
-        paddingVertical={12}
-        borderBottomWidth={1}
-        borderBottomColor="$borderColor"
-      >
-        <Text fontSize="$7" fontWeight="700">
-          {title}
-        </Text>
-        <XStack gap={8}>
-          <Button
-            size="$3"
-            icon={<UserPlus color={theme.accent1.val} />}
-            onPress={() => setOpen(true)}
-            color="$accent1"
-          />
-          <Button
-            size="$3"
-            icon={Plus}
-            onPress={onActionPress}
-            color="white"
-            backgroundColor={"$accent1"}
-          />
-        </XStack>
-      </XStack>
+      <CommonHeader
+        center={<H4>{group.name}</H4>}
+        right={
+          <XStack>
+            <Button
+              icon={<UserPlus color={theme.accent1.val} />}
+              onPress={() => setOpen(true)}
+              chromeless
+              padding={"$2"}
+              pressStyle={{
+                scale: 0.9,
+                opacity: 0.7,
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+              }}
+            />
+            <Button
+              icon={Plus}
+              onPress={onActionPress}
+              chromeless
+              padding={"$2"}
+              pressStyle={{
+                scale: 0.9,
+                opacity: 0.7,
+                backgroundColor: "transparent",
+                borderColor: "transparent",
+              }}
+            />
+          </XStack>
+        }
+      />
 
       <InviteCodeSheet
         open={open}
         onOpenChange={setOpen}
-        inviteCode={inviteCode}
+        inviteCode={group.code}
       />
       <CurrentToast />
     </>
