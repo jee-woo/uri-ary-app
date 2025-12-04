@@ -1,6 +1,4 @@
-import { baseUrl } from "@/constants/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import apiClient from "@/services/apiClient";
 
 interface CreateDiaryPayload {
   groupId: string;
@@ -13,7 +11,6 @@ export const createDiary = async ({
   content,
   imageUri,
 }: CreateDiaryPayload) => {
-  const token = await AsyncStorage.getItem("token");
   const formData = new FormData();
 
   formData.append("title", "");
@@ -31,12 +28,11 @@ export const createDiary = async ({
     } as any);
   }
 
-  const res = await axios.post(
-    `${baseUrl}/api/groups/${groupId}/diaries`,
+  const res = await apiClient.post(
+    `/api/groups/${groupId}/diaries`,
     formData,
     {
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
     }

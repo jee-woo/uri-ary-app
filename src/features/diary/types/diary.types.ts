@@ -6,7 +6,10 @@ export type Comment = {
   parentId: number | null;
 };
 
-export type NestedComment = Comment & { replies: NestedComment[] };
+export type NestedComment = Comment & {
+  children: NestedComment[];
+  parentAuthorUsername?: string;
+};
 
 export type DiaryDetail = {
   id: number;

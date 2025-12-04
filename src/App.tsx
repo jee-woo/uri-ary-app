@@ -12,6 +12,7 @@ import DiaryDetailScreen from "@/features/diary/screens/DiaryDetailScreen";
 import GroupCreateScreen from "@/features/group/screens/GroupCreateScreen";
 import GroupListScreen from "@/features/group/screens/GroupListScreen";
 import GroupScreen from "@/features/group/screens/GroupScreen";
+import SettingScreen from "@/features/setting/screens/SettingScreen";
 import { ActivityIndicator, Platform, StatusBar, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { TamaguiProvider } from "tamagui";
@@ -19,7 +20,13 @@ import { config } from "../tamagui.config";
 
 const Stack = createNativeStackNavigator();
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 60 * 1000,
+    },
+  },
+});
 
 const linking = {
   prefixes: [Platform.OS === "web" ? window.location.origin : "uriary://"],
@@ -95,9 +102,10 @@ export default function App() {
                     <Stack.Screen
                       name="DiaryCreate"
                       component={DiaryCreateScreen}
-                      options={{ title: "다이어리 작성" }}
+                      options={{ title: "일기 작성" }}
                     />
                     <Stack.Screen name="Diary" component={DiaryDetailScreen} />
+                    <Stack.Screen name="Setting" component={SettingScreen} />
                   </Stack.Navigator>
                 </Suspense>
               </NavigationContainer>
