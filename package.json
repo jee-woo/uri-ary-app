@@ -35,8 +35,8 @@
     "expo-status-bar": "~2.2.3",
     "expo-web-browser": "~14.2.0",
     "lucide-react-native": "^0.525.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "19.0.1",
+    "react-dom": "19.0.1",
     "react-hook-form": "^7.60.0",
     "react-native": "0.79.4",
     "react-native-keyboard-controller": "^1.18.0",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@faker-js/faker": "^10.0.0",
-    "@types/react": "~19.0.10",
+    "@types/react": "19.0.1",
     "@types/uuid": "^10.0.0",
     "msw": "^2.11.2",
     "typescript": "~5.8.3"
