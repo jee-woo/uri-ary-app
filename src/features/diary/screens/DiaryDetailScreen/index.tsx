@@ -1,7 +1,9 @@
+import CommonHeader from "@/components/CommonHeader";
 import KeyboardAvoidingWrapper from "@/components/KeyboardAvoidingWrapper";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
-import { Text, YStack } from "tamagui";
+import { ScrollView } from "react-native";
+import { Separator, Text, YStack } from "tamagui";
 import CommentForm from "./components/CommentForm";
 import CommentList from "./components/CommentList";
 import { DiaryContent } from "./components/DiaryContent";
@@ -16,7 +18,7 @@ export default function DiaryDetailScreen() {
   };
 
   const { data: diary, isError } = useDiaryDetailQuery(groupId, diaryId);
-  const commentTree = buildCommentTree(diary.comments);
+  const commentTree = buildCommentTree(diary?.comments || []);
   const [replyParentId, setReplyParentId] = useState<number | null>(null);
   const [replyUsername, setReplyUsername] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState<string | null>(null);
@@ -32,19 +34,30 @@ export default function DiaryDetailScreen() {
   return (
     <KeyboardAvoidingWrapper>
       <YStack flex={1} backgroundColor="$background">
-        <DiaryContent diary={diary} />
-        <CommentList
-          commentTree={commentTree}
-          onReplyPress={(id, username, content) => {
-            setReplyParentId(id);
-            setReplyUsername(username);
-            setReplyContent(content);
-          }}
-        />
+        <CommonHeader />
+        <ScrollView>
+          <YStack paddingHorizontal={20} paddingVertical={24}>
+            <DiaryContent diary={diary} />
+          </YStack>
+
+          <Separator />
+
+          <YStack paddingHorizontal={20} paddingVertical={24}>
+            <CommentList
+              commentTree={commentTree}
+              onReplyPress={(id, username, content) => {
+                setReplyParentId(id);
+                setReplyUsername(username);
+                setReplyContent(content);
+              }}
+            />
+          </YStack>
+        </ScrollView>
+
         <YStack
           padding={12}
           borderTopWidth={1}
-          borderColor="$backgroundHover"
+          borderColor="$borderColor"
           backgroundColor="$background"
         >
           <CommentForm

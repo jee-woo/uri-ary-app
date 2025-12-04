@@ -39,6 +39,7 @@ export default function CommentForm({
           toast.show("댓글 등록 완료!", { native: true });
           setContent("");
           onReset();
+          inputRef.current?.blur();
         },
         onError: () => {
           toast.show("댓글 등록 실패", { native: true });
@@ -59,14 +60,19 @@ export default function CommentForm({
   }, [isReplying]);
 
   return (
-    <YStack gap={8}>
+    <YStack gap={10}>
       {isReplying && (
-        <YStack gap={4}>
+        <YStack gap={4} padding={8} backgroundColor="$color2" borderRadius={8}>
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$3" color="$colorPress">
+            <Text fontSize="$3" color="$color12">
               {parentUsername ?? "작성자"}님에게 답글 작성 중...
             </Text>
-            <Button size="$2" variant="outlined" onPress={handleCancel}>
+            <Button
+              size="$2"
+              variant="outlined"
+              onPress={handleCancel}
+              chromeless
+            >
               취소
             </Button>
           </XStack>
@@ -74,7 +80,7 @@ export default function CommentForm({
           {parentContent && (
             <Text
               fontSize="$3"
-              color="$black8"
+              color="$color11"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -84,7 +90,7 @@ export default function CommentForm({
         </YStack>
       )}
 
-      <XStack gap={8} alignItems="flex-start">
+      <XStack gap={8} alignItems="flex-end">
         <Input
           ref={inputRef}
           placeholder={isReplying ? "답글을 입력하세요" : "댓글을 입력하세요"}
@@ -92,13 +98,23 @@ export default function CommentForm({
           onChangeText={setContent}
           multiline
           flex={1}
+          minHeight={40}
+          maxHeight={100}
+          paddingHorizontal={15}
+          paddingVertical={10}
+          borderColor="$color6"
+          focusStyle={{ borderColor: "$accent1" }}
         />
 
         <Button
-          size="$3"
+          size="$4"
           onPress={handleSubmit}
           disabled={!content.trim() || isPending}
           alignSelf="stretch"
+          minWidth={60}
+          backgroundColor="$accent1"
+          color="white"
+          disabledStyle={{ backgroundColor: "$color5" }}
         >
           등록
         </Button>

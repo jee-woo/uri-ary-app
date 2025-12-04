@@ -58,7 +58,7 @@ const groupDetails: Record<number, GroupDetail> = Object.fromEntries(
   })
 );
 
-// ─────────────── 다이어리 상세 (/api/groups/:groupId/diaries/:diaryId) ───────────────
+// ─────────────── 일기 상세 (/api/groups/:groupId/diaries/:diaryId) ───────────────
 const diaryDetails: Record<number, DiaryDetail> = {};
 
 for (const gd of Object.values(groupDetails)) {
@@ -69,11 +69,11 @@ for (const gd of Object.values(groupDetails)) {
     const comments: Comment[] = Array.from({
       length: faker.number.int({ min: 2, max: 8 }),
     }).map((_, idx) => ({
-      id: d.id * 1000 + idx, // 다이어리 ID 기반으로 고유 ID 생성
+      id: d.id * 1000 + idx, // 일기 ID 기반으로 고유 ID 생성
       content: faker.lorem.sentence({ min: 3, max: 20 }),
       authorUsername: faker.helpers.arrayElement(gd.members).username, // 그룹 멤버 중 랜덤으로 작성자 지정
       createdAt: faker.date
-        .recent({ days: 10, refDate: d.createdAt }) // 다이어리 작성일 이후 날짜로 생성
+        .recent({ days: 10, refDate: d.createdAt }) // 일기 작성일 이후 날짜로 생성
         .toISOString(),
       parentId: null, // 우선 모두 최상위 댓글로 초기화
     }));
@@ -140,7 +140,7 @@ export const handlers = [
     return HttpResponse.json(detail);
   }),
 
-  // 다이어리 상세
+  // 일기 상세
   http.get("/api/groups/:groupId/diaries/:diaryId", ({ params }) => {
     const { diaryId } = params;
     const detail = diaryDetails[Number(diaryId)];
@@ -167,7 +167,7 @@ export const handlers = [
     return HttpResponse.json(newComment);
   }),
 
-  // 다이어리 작성
+  // 일기 작성
   http.post("/api/groups/:groupId/diaries", async ({ request, params }) => {
     const body = (await request.json()) as DiaryDetail;
     const newDiary = {

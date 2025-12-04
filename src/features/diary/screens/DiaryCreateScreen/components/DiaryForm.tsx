@@ -26,13 +26,14 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
       },
       {
         onSuccess: () => {
-          toast.show("다이어리 작성 완료!", { native: true });
+          toast.show("일기 작성 완료!", { native: true });
           navigation.reset({
             index: 0,
             routes: [{ name: "Group", params: { groupId } }],
           });
         },
-        onError: () => {
+        onError: (e) => {
+          console.error(e);
           toast.show("작성 실패. 다시 시도해주세요.", { native: true });
         },
       }
@@ -40,16 +41,17 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
   };
 
   return (
-    <YStack gap={12}>
+    <YStack gap={12} flex={1}>
       <Controller
         control={control}
         name="content"
         render={({ field: { value, onChange } }) => (
           <TextArea
-            placeholder="내용을 입력하세요"
+            placeholder="공유하고 싶은 하루를 작성해보세요."
             value={value}
             onChangeText={onChange}
-            numberOfLines={5}
+            textAlignVertical="top"
+            flex={1}
           />
         )}
       />
@@ -57,7 +59,13 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
         <Text color="red">{formState.errors.content.message}</Text>
       )}
 
-      <Button disabled={isPending} onPress={handleSubmit(onSubmit)}>
+      <Button
+        disabled={isPending || !formState.isValid}
+        onPress={handleSubmit(onSubmit)}
+        backgroundColor="$accent1"
+        color="white"
+        disabledStyle={{ backgroundColor: "$color5" }}
+      >
         {isPending ? <Spinner size="small" /> : "작성하기"}
       </Button>
     </YStack>

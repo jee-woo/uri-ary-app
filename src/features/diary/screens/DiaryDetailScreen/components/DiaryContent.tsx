@@ -1,4 +1,5 @@
 import { DiaryDetail } from "@/features/diary/types/diary.types";
+import { formatRelativeTime } from "@/utils/formatDate";
 import { Image, Text, YStack } from "tamagui";
 
 type Props = {
@@ -6,15 +7,6 @@ type Props = {
 };
 export function DiaryContent({ diary }: Props) {
   const { authorUsername, createdAt, content, imageUrl } = diary;
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}월 ${String(date.getDate()).padStart(2, "0")}일 ${String(
-      date.getHours()
-    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-  };
 
   return (
     <YStack gap={10}>
@@ -22,7 +14,7 @@ export function DiaryContent({ diary }: Props) {
         {authorUsername}
       </Text>
       <Text fontSize="$3" color="$colorPress">
-        {formatDate(createdAt)}
+        {formatRelativeTime(createdAt)}
       </Text>
 
       {imageUrl && (

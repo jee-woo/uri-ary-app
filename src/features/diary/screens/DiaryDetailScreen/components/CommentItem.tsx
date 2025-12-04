@@ -1,17 +1,8 @@
 import { NestedComment } from "@/features/diary/types/diary.types";
+import { formatRelativeTime } from "@/utils/formatDate";
 import { MessageCircle } from "lucide-react-native";
 import { Pressable } from "react-native";
-import { Text, XStack, YStack } from "tamagui";
-
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}.${String(date.getDate()).padStart(2, "0")} ${String(
-    date.getHours()
-  ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-}
+import { Text, XStack, YStack, useTheme } from "tamagui";
 
 export default function CommentItem({
   comment,
@@ -20,16 +11,27 @@ export default function CommentItem({
   comment: NestedComment;
   onReplyPress: (id: number, username: string, content: string) => void;
 }) {
+  const theme = useTheme();
+
   return (
     <YStack gap={4}>
-      <XStack alignItems="center" gap={6}>
-        <Text fontWeight="700">{comment.authorUsername}</Text>
-        <Text fontSize="$2" color="$colorPress">
-          {formatDate(comment.createdAt)}
+      <XStack justifyContent="space-between" alignItems="center">
+        <XStack alignItems="center" gap={6}>
+          <Text fontWeight="bold" fontSize="$4">
+            {comment.authorUsername}
+          </Text>
+        </XStack>
+        <Text color="$color11" fontSize={"$2"}>
+          {formatRelativeTime(comment.createdAt)}
         </Text>
       </XStack>
 
-      <Text fontSize="$4" lineHeight="$4">
+      <Text fontSize="$4" lineHeight="$4" paddingLeft={2}>
+        {comment.parentAuthorUsername && (
+          <Text fontWeight="bold" color="$accent1">
+            @{comment.parentAuthorUsername}{" "}
+          </Text>
+        )}
         {comment.content}
       </Text>
 
@@ -45,11 +47,23 @@ export default function CommentItem({
             alignItems: "center",
           }}
         >
-          <MessageCircle size={16} color="#888" />
-          <Text fontSize="$2" marginLeft={4} color="#888">
+          <MessageCircle size={14} color={theme.color9?.val} />
+          <Text fontSize="$2" marginLeft={4} color="$color11">
             답글
           </Text>
         </Pressable>
+      )}
+
+      {comment.children && comment.children.length > 0 && (
+        <YStack gap={16} paddingLeft={20} paddingTop={8}>
+          {comment.children.map((child) => (
+            <CommentItem
+              key={child.id}
+              comment={child}
+              onReplyPress={onReplyPress}
+            />
+          ))}
+        </YStack>
       )}
     </YStack>
   );
