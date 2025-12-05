@@ -1,9 +1,9 @@
 import CommonHeader from "@/components/CommonHeader";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, H4, YStack } from "tamagui";
 
+import { clearTokens } from "@/features/auth/utils/tokenManager";
 import { RootStackParamList } from "@/types/navigation.types";
 
 type SettingScreenNavigationProp = NativeStackNavigationProp<
@@ -15,7 +15,7 @@ export default function SettingScreen() {
   const navigation = useNavigation<SettingScreenNavigationProp>();
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("token");
+    await clearTokens();
     navigation.reset({
       index: 0,
       routes: [{ name: "Login" }],

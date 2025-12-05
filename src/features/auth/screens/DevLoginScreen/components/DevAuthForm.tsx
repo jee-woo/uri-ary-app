@@ -1,7 +1,7 @@
 import { baseUrl } from "@/constants/api";
+import { storeTokens } from "@/features/auth/utils/tokenManager";
 import { RootStackParamList } from "@/types/navigation.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
@@ -48,8 +48,8 @@ export default function DevAuthForm() {
       });
 
       if (!res.ok) throw new Error(`로그인 실패: ${res.status}`);
-      const json = await res.json();
-      await AsyncStorage.setItem("token", json.token);
+      const { accessToken, refreshToken } = await res.json();
+      await storeTokens({ accessToken, refreshToken });
 
       alert("✅ 개발자 로그인 성공!");
       navigation.reset({ index: 0, routes: [{ name: "Home" }] });
