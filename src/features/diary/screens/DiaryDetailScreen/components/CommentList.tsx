@@ -1,7 +1,6 @@
 import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import { NestedComment } from "@/features/diary/types/diary.types";
 import { MessageSquareText } from "lucide-react-native";
-import { FlatList } from "react-native";
 import { Text, YStack, useTheme } from "tamagui";
 import CommentItem from "./CommentItem";
 
@@ -13,12 +12,9 @@ export default function CommentList({
   onReplyPress: (id: number, username: string, content: string) => void;
 }) {
   const theme = useTheme();
-  const renderComment = ({ item }: { item: NestedComment }) => (
-    <CommentItem comment={item} onReplyPress={onReplyPress} />
-  );
 
   return (
-    <YStack gap={16} flex={1}>
+    <YStack gap={16}>
       <Text fontSize="$5" fontWeight="bold">
         댓글 {commentTree.length}
       </Text>
@@ -30,12 +26,15 @@ export default function CommentList({
           message="첫 댓글을 남겨보세요!"
         />
       ) : (
-        <FlatList
-          data={commentTree}
-          renderItem={renderComment}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ gap: 24 }}
-        />
+        <YStack gap={24}>
+          {commentTree.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              onReplyPress={onReplyPress}
+            />
+          ))}
+        </YStack>
       )}
     </YStack>
   );
