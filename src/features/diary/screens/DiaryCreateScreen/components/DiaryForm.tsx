@@ -15,7 +15,7 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
   const { control, handleSubmit, formState } = useFormContext<DiaryInput>();
   const navigation = useNavigation<any>();
   const toast = useToastController();
-  const { mutate, isPending } = useCreateDiaryMutation();
+  const { mutate, isPending } = useCreateDiaryMutation({ groupId });
 
   const onSubmit = (data: { content: string }) => {
     mutate(

@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
@@ -7,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 
 import DevLoginScreen from "@/features/auth/screens/DevLoginScreen";
 import LoginScreen from "@/features/auth/screens/LoginScreen";
+import { getAccessToken } from "@/features/auth/utils/tokenManager";
 import DiaryCreateScreen from "@/features/diary/screens/DiaryCreateScreen";
 import DiaryDetailScreen from "@/features/diary/screens/DiaryDetailScreen";
 import GroupCreateScreen from "@/features/group/screens/GroupCreateScreen";
@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 10 * 60 * 1000,
+      staleTime: 5 * 60 * 1000, // 예: 5분
     },
   },
 });
@@ -47,8 +47,8 @@ export default function App() {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = await AsyncStorage.getItem("token");
-      setIsLoggedIn(!!token);
+      const accessToken = await getAccessToken();
+      setIsLoggedIn(!!accessToken);
       setIsLoading(false);
     };
 
