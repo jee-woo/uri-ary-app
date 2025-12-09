@@ -11,8 +11,10 @@ export const storeTokens = async ({
   accessToken: string;
   refreshToken: string;
 }) => {
-  await AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
+  await Promise.all([
+    AsyncStorage.setItem(ACCESS_TOKEN_KEY, accessToken),
+    SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken),
+  ]);
 };
 
 export const getAccessToken = async () => {
@@ -24,6 +26,8 @@ export const getRefreshToken = async () => {
 };
 
 export const clearTokens = async () => {
-  await AsyncStorage.removeItem(ACCESS_TOKEN_KEY);
-  await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+  await Promise.all([
+    await AsyncStorage.removeItem(ACCESS_TOKEN_KEY),
+    await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY),
+  ]);
 };

@@ -45,7 +45,6 @@ const processQueue = (error: any, token: string | null = null) => {
   });
   failedQueue = [];
 };
-// apiClient.ts 파일에 추가/삽입
 
 apiClient.interceptors.request.use(
   async (config) => {
@@ -70,7 +69,6 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const accessToken = await getAccessToken();
 
     // 1. 401 에러가 아니거나 이미 재시도된 요청이면 즉시 에러 반환
     if (error.response?.status !== 401 || originalRequest._retry) {
