@@ -7,6 +7,7 @@ import Constants from "expo-constants";
 import * as Linking from "expo-linking";
 import { useEffect } from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
+import { useAuthStore } from "../../stores/authStore";
 import KakaoSymbol from "./icons/KakaoSymbol";
 
 type Navigation = NativeStackNavigationProp<RootStackParamList, "Login">;
@@ -15,6 +16,7 @@ const API_BASE_URL = Constants.expoConfig?.extra?.eas?.apiBaseUrl;
 
 export default function LoginScreen() {
   const navigation = useNavigation<Navigation>();
+  const login = useAuthStore((store) => store.login);
 
   useEffect(() => {
     const handleDeepLink = async ({ url }: { url: string }) => {
@@ -27,6 +29,7 @@ export default function LoginScreen() {
             code
           );
           await storeTokens({ accessToken, refreshToken });
+          login();
           navigation.navigate("Home");
         } catch (error) {
           console.error("Failed to exchange code for tokens:", error);
