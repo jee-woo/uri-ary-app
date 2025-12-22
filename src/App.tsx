@@ -107,6 +107,7 @@ export default function App() {
                           <Stack.Screen
                             name="DiaryCreate"
                             component={DiaryCreateScreen}
+                            options={{ title: "일기 작성" }}
                           />
                           <Stack.Screen
                             name="Diary"
