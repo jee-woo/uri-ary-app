@@ -1,4 +1,5 @@
 import { baseUrl } from "@/constants/api";
+import { useAuthStore } from "@/features/auth/stores/authStore";
 
 import {
   getAccessToken,
@@ -13,6 +14,7 @@ const apiClient = axios.create({
     "ngrok-skip-browser-warning": "true",
   },
 });
+const authClient = axios.create({ baseURL: baseUrl });
 
 export const exchangeCodeForTokens = async (code: string) => {
   const response = await apiClient.post("/api/auth/token", { code });
@@ -20,10 +22,17 @@ export const exchangeCodeForTokens = async (code: string) => {
 };
 
 export const refreshTokenApi = async (token: string) => {
-  const response = await apiClient.post("/api/auth/refresh", {
+  const response = await authClient.post("/api/auth/refresh", {
     refreshToken: token,
   });
   return response.data;
+};
+
+const handleLogout = async (error: unknown) => {
+  await useAuthStore.getState().logout();
+  // 재시도를 방지하기 위해 에러 객체에 커스텀 플래그를 심거나
+  // 즉시 거부된 프로미스를 반환합니다.
+  return Promise.reject(error);
 };
 
 // 인터셉터 외부에 상태를 관리할 변수 선언
@@ -81,8 +90,8 @@ apiClient.interceptors.response.use(
 
     if (!refreshToken) {
       // 리프레시 토큰이 없으면 즉시 로그아웃 처리 함수 호출
-      // logoutHandler(); // TODO: 이 함수는 Auth Context/Store에서 구현해야 함
-      return Promise.reject(error);
+
+      return handleLogout(error);
     }
 
     // 3. 동시성 처리 로직
@@ -125,8 +134,7 @@ apiClient.interceptors.response.use(
       isRefreshing = false;
       processQueue(refreshError); // 큐에 대기 중인 모든 요청에게 실패를 알림
 
-      // logoutHandler(); // TODO: 로그아웃 처리
-      return Promise.reject(refreshError);
+      return handleLogout(refreshError);
     }
   }
 );
