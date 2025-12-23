@@ -10,7 +10,7 @@ interface Member {
 }
 export interface Diary {
   id: number;
-  content: string;
+  encryptedContent: string;
   authorUsername: string;
   createdAt: string;
   imageUrl: string;
