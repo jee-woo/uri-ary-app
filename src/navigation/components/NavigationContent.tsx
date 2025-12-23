@@ -22,7 +22,7 @@ const linking = {
       DevLogin: "/test-login",
       GroupCreate: "/groups/new",
       Group: "groups/:groupId",
-      OAuthRedirect: "/oauth-redirect",
+      OAuthRedirect: "/oauth2/redirect",
     },
   },
 };

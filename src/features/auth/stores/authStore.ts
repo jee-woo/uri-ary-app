@@ -5,12 +5,22 @@ import {
 import { queryClient } from "@/services/queryClient";
 import { create } from "zustand";
 
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  publicKey: string | null;
+}
+
 interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean; // 앱 초기 토큰 검사 상태
   login: () => void;
   logout: () => Promise<void>;
   initialize: () => Promise<void>; // 앱 시작 시 실행할 함수
+  user: User | null;
+  setUser: (user: User) => void;
+  clearUser: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -36,4 +46,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isLoading: false });
     }
   },
+
+  user: null,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: null }),
 }));
