@@ -1,11 +1,8 @@
-import { storeTokens } from "@/features/auth/utils/tokenManager";
-import { exchangeCodeForTokens } from "@/services/apiClient";
 import { RootStackParamList } from "@/types/navigation.types";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Constants from "expo-constants";
 import * as Linking from "expo-linking";
-import { useEffect } from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
 import { useAuthStore } from "../../stores/authStore";
 import KakaoSymbol from "./icons/KakaoSymbol";
@@ -18,35 +15,35 @@ export default function LoginScreen() {
   const navigation = useNavigation<Navigation>();
   const login = useAuthStore((store) => store.login);
 
-  useEffect(() => {
-    const handleDeepLink = async ({ url }: { url: string }) => {
-      const { queryParams } = Linking.parse(url);
-      const code = queryParams?.code as string | undefined;
+  // useEffect(() => {
+  //   const handleDeepLink = async ({ url }: { url: string }) => {
+  //     const { queryParams } = Linking.parse(url);
+  //     const code = queryParams?.code as string | undefined;
 
-      if (code) {
-        try {
-          const { accessToken, refreshToken } = await exchangeCodeForTokens(
-            code
-          );
-          await storeTokens({ accessToken, refreshToken });
-          login();
-          navigation.navigate("Home");
-        } catch (error) {
-          console.error("Failed to exchange code for tokens:", error);
-        }
-      }
-    };
+  //     if (code) {
+  //       try {
+  //         const { accessToken, refreshToken } = await exchangeCodeForTokens(
+  //           code
+  //         );
+  //         await storeTokens({ accessToken, refreshToken });
+  //         login();
+  //         navigation.navigate("Home");
+  //       } catch (error) {
+  //         console.error("Failed to exchange code for tokens:", error);
+  //       }
+  //     }
+  //   };
 
-    const subscription = Linking.addEventListener("url", handleDeepLink);
+  //   const subscription = Linking.addEventListener("url", handleDeepLink);
 
-    Linking.getInitialURL().then((url) => {
-      if (url) {
-        handleDeepLink({ url });
-      }
-    });
+  //   Linking.getInitialURL().then((url) => {
+  //     if (url) {
+  //       handleDeepLink({ url });
+  //     }
+  //   });
 
-    return () => subscription.remove();
-  }, [navigation]);
+  //   return () => subscription.remove();
+  // }, [navigation]);
 
   const handleKakaoLogin = () => {
     const loginUrl = `${API_BASE_URL}/oauth2/authorization/kakao`;

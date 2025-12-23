@@ -1,7 +1,9 @@
+import { Buffer } from "buffer";
 import { registerRootComponent } from "expo";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
 import App from "./src/App";
+global.Buffer = Buffer;
 
 const isMock = Constants.expoConfig?.extra?.eas?.mock === "1";
 const isWeb = Platform.OS === "web";
