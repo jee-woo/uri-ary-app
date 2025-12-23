@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Constants from "expo-constants";
 import * as Linking from "expo-linking";
+import { useState } from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
-import { useAuthStore } from "../../stores/authStore";
 import KakaoSymbol from "./icons/KakaoSymbol";
 
 type Navigation = NativeStackNavigationProp<RootStackParamList, "Login">;
@@ -13,41 +13,12 @@ const API_BASE_URL = Constants.expoConfig?.extra?.eas?.apiBaseUrl;
 
 export default function LoginScreen() {
   const navigation = useNavigation<Navigation>();
-  const login = useAuthStore((store) => store.login);
-
-  // useEffect(() => {
-  //   const handleDeepLink = async ({ url }: { url: string }) => {
-  //     const { queryParams } = Linking.parse(url);
-  //     const code = queryParams?.code as string | undefined;
-
-  //     if (code) {
-  //       try {
-  //         const { accessToken, refreshToken } = await exchangeCodeForTokens(
-  //           code
-  //         );
-  //         await storeTokens({ accessToken, refreshToken });
-  //         login();
-  //         navigation.navigate("Home");
-  //       } catch (error) {
-  //         console.error("Failed to exchange code for tokens:", error);
-  //       }
-  //     }
-  //   };
-
-  //   const subscription = Linking.addEventListener("url", handleDeepLink);
-
-  //   Linking.getInitialURL().then((url) => {
-  //     if (url) {
-  //       handleDeepLink({ url });
-  //     }
-  //   });
-
-  //   return () => subscription.remove();
-  // }, [navigation]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleKakaoLogin = () => {
     const loginUrl = `${API_BASE_URL}/oauth2/authorization/kakao`;
     Linking.openURL(loginUrl);
+    setIsLoading(true);
   };
 
   return (
@@ -69,11 +40,13 @@ export default function LoginScreen() {
           onPress={handleKakaoLogin}
           backgroundColor="#FEE500"
           pressStyle={{ backgroundColor: "#F2D500" }}
+          disabledStyle={{ backgroundColor: "" }}
           width="100%"
           height="$5"
           borderRadius="$4"
           borderWidth={0}
           elevation="$1"
+          disabled={isLoading}
         >
           <XStack alignItems="center" justifyContent="center" space="$2.5">
             <KakaoSymbol size={18} />
