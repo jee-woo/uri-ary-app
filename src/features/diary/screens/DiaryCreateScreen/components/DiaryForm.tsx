@@ -71,6 +71,10 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
       );
     } catch (error) {
       if (__DEV__) console.error("암호화 및 저장 실패:", error);
+      toast.show("일기 암호화에 실패했습니다. 다시 시도해주세요.", {
+        native: true,
+        backgroundColor: "$red10",
+      });
     }
   };
 
