@@ -1,10 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createDiary } from "../../services/api";
+import { createEncryptedDiary } from "../../services/api";
 
-export const useCreateDiaryMutation = ({ groupId }: { groupId: string }) => {
+export const useCreateEncryptedDiaryMutation = ({
+  groupId,
+}: {
+  groupId: string;
+}) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createDiary,
+    mutationFn: createEncryptedDiary,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["group", groupId] });
     },

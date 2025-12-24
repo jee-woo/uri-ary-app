@@ -3,7 +3,13 @@ import { useToastController } from "@tamagui/toast";
 import { Controller, useFormContext } from "react-hook-form";
 import { Button, Spinner, Text, TextArea, YStack } from "tamagui";
 
-import { useCreateDiaryMutation } from "../hooks/mutations/useCreateDiaryMutation";
+import { usePublicKey } from "@/features/auth/hooks/usePublicKey";
+import {
+  encryptAESKeyWithRSA,
+  encryptContent,
+  generateAESKey,
+} from "@/libs/crypto/aes";
+import { useCreateEncryptedDiaryMutation } from "../hooks/mutations/useCreateEncryptedDiaryMutation";
 import { DiaryInput } from "../schemas/diary.schema";
 
 type Props = {
@@ -15,29 +21,61 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
   const { control, handleSubmit, formState } = useFormContext<DiaryInput>();
   const navigation = useNavigation<any>();
   const toast = useToastController();
-  const { mutate, isPending } = useCreateDiaryMutation({ groupId });
+  const { mutate, isPending } = useCreateEncryptedDiaryMutation({ groupId });
+  const { getOrRegisterKey } = usePublicKey();
 
-  const onSubmit = (data: { content: string }) => {
-    mutate(
-      {
-        groupId,
-        content: data.content,
-        imageUri,
-      },
-      {
-        onSuccess: () => {
-          toast.show("일기 작성 완료!", { native: true });
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Group", params: { groupId } }],
-          });
-        },
-        onError: (e) => {
-          console.error(e);
-          toast.show("작성 실패. 다시 시도해주세요.", { native: true });
-        },
+  const onSubmit = async (data: { content: string }) => {
+    try {
+      const myPublicKey = await getOrRegisterKey();
+
+      if (!myPublicKey) {
+        toast.show(
+          "보안키가 등록되지 않았습니다. 설정에서 키를 등록해주세요.",
+          {
+            native: true,
+            backgroundColor: "$red10",
+          }
+        );
+        return;
       }
-    );
+
+      const aesKey = generateAESKey();
+      const { encryptedContent, iv, authTag } = encryptContent(
+        data.content,
+        aesKey
+      );
+      const encryptedAesKey = encryptAESKeyWithRSA(aesKey, myPublicKey);
+
+      mutate(
+        {
+          groupId,
+          encryptedContent,
+          iv,
+          authTag,
+          encryptedAesKey,
+          imageUri,
+        },
+        {
+          onSuccess: () => {
+            toast.show("일기 작성 완료!", { native: true });
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Group", params: { groupId } }],
+            });
+          },
+          onError: (e) => {
+            console.error(e);
+            toast.show("작성 실패. 다시 시도해주세요.", { native: true });
+          },
+        }
+      );
+    } catch (error) {
+      if (__DEV__) console.error("암호화 및 저장 실패:", error);
+      toast.show("일기 암호화에 실패했습니다. 다시 시도해주세요.", {
+        native: true,
+        backgroundColor: "$red10",
+      });
+    }
   };
 
   return (

@@ -14,9 +14,12 @@ export type NestedComment = Comment & {
 export type DiaryDetail = {
   id: number;
   title: string;
-  content: string;
   authorUsername: string;
   createdAt: string;
   comments: Comment[];
   imageUrl?: string;
+  encryptedContent: string;
+  encryptedAesKey: string;
+  iv: string;
+  authTag: string;
 };

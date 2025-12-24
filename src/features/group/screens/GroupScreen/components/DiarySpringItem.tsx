@@ -9,7 +9,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Diary">;
 interface DiarySpringItemProps {
   diary: {
     id: number;
-    content: string;
+    encryptedContent: string;
     authorUsername: string;
     createdAt: string;
     imageUrl?: string;
@@ -92,7 +92,7 @@ export default function DiarySpringItem({
           </XStack>
 
           <Text fontSize="$4" lineHeight="$4" numberOfLines={3}>
-            {diary.content}
+            {diary.encryptedContent}
           </Text>
         </YStack>
       </Card>
