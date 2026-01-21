@@ -1,6 +1,9 @@
+export type MemberStatus = 'ACCEPTED' | 'PENDING';
+
 export interface Group {
   id: number;
   name: string;
+  status: MemberStatus;
 }
 
 interface Member {
