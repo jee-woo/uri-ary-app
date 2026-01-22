@@ -786,6 +786,13 @@
     ieee754 "^1.2.1"
     react-native-quick-base64 "^2.0.5"
 
+"@dev-plugins/react-query@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@dev-plugins/react-query/-/react-query-0.4.0.tgz#ac64fe1cbdac9bc8fd5efb0f69fa467c74e99557"
+  integrity sha512-/8M2a7DlVTjcdhb4D/E+aHUCOqSS6s53y3fFrOoCyLPxhhhkMujS91pARH6XbF/GRr6p6RBNBJQpWasI6uj7GA==
+  dependencies:
+    flatted "^3.3.1"
+
 "@emotion/is-prop-valid@^0.8.2":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -4298,6 +4305,11 @@ find-up@^5.0.0:
   dependencies:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
+
+flatted@^3.3.1:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.3.3.tgz#67c8fad95454a7c7abebf74bb78ee74a44023358"
+  integrity sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==
 
 flow-enums-runtime@^0.0.6:
   version "0.0.6"
