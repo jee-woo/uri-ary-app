@@ -31,16 +31,12 @@ export default function OAuthRedirectScreen() {
 
       try {
         // 1. 서버와 토큰 교환
-        const { accessToken, refreshToken, user } = await exchangeCodeForTokens(
-          code
-        );
+        const { accessToken, refreshToken, user } =
+          await exchangeCodeForTokens(code);
 
         // 2. 토큰, user 정보 저장
-        await Promise.all([
-          storeTokens({ accessToken, refreshToken }),
-          setUser(user),
-        ]);
         await storeTokens({ accessToken, refreshToken });
+        setUser(user);
 
         // 3. 전역 로그인 상태 변경 (이 시점에 AuthenticatedLayout이 활성화되어 키 등록 훅이 실행됩니다)
         login();

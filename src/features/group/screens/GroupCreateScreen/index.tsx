@@ -9,6 +9,7 @@ import { RootStackParamList } from "@/types/navigation.types";
 
 import CommonHeader from "@/components/CommonHeader";
 import { useCreateGroupMutation } from "@/features/group/screens/GroupCreateScreen/hooks/mutations/useCreateGroupMutation";
+import { Group } from "../../types/group.types";
 
 const groupSchema = z.object({
   name: z.string().min(1).max(20, "그룹 이름은 20자 이내로 입력해주세요."),
@@ -38,7 +39,7 @@ export default function GroupCreateScreen() {
 
   const onSubmit = (data: GroupForm) => {
     createGroupMutation.mutate(data.name, {
-      onSuccess: (group) => {
+      onSuccess: (group: Group) => {
         alert("그룹이 생성되었습니다!");
         navigation.navigate("Group", { groupId: group.id });
       },

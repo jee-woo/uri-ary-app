@@ -4,7 +4,7 @@ import { Text, YStack } from "tamagui";
 interface EmptyPlaceholderProps {
   icon: ReactNode;
   title: string;
-  message: string;
+  message?: string;
 }
 
 export default function EmptyPlaceholder({

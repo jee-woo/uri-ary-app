@@ -1,4 +1,4 @@
-import { Group, MemberStatus } from "@/features/group/types/group.types";
+import { Group } from "@/features/group/types/group.types";
 import { RootStackParamList } from "@/types/navigation.types";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";

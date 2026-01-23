@@ -7,6 +7,20 @@ export const fetchGroups = async (): Promise<Group[]> => {
 };
 
 export const joinGroup = async (code: string) => {
-  const response = await apiClient.post("/api/groups/join", { code });
+  const response = await apiClient.post("/api/groups/join-requests", { code });
+  return response.data;
+};
+
+export const approveGroupRequest = async (targetId: number) => {
+  const response = await apiClient.post(
+    `/api/groups/join-requests/${targetId}/approve`,
+  );
+  return response.data;
+};
+
+export const declineGroupRequest = async (requestId: number) => {
+  const response = await apiClient.post(
+    `/api/groups/join-requests/${requestId}/reject`,
+  );
   return response.data;
 };
