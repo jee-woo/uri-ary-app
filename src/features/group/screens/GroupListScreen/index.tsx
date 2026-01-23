@@ -12,7 +12,7 @@ import { useJoinGroupMutation } from "./hooks/mutations/useJoinGroupMutation";
 
 type GroupListScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  "Group" | "Setting"
+  "Group" | "Setting" | "Notification"
 >;
 
 export default function GroupListScreen() {
@@ -27,7 +27,7 @@ export default function GroupListScreen() {
   const handleJoinGroup = (code: string) => {
     joinGroupMutation.mutate(code, {
       onSuccess: () => {
-        toast.show("그룹에 참여했습니다!", { native: true });
+        toast.show("그룹에 참여를 요청했습니다", { native: true });
         setJoinOpen(false);
       },
       onError: (error) => {
@@ -44,6 +44,7 @@ export default function GroupListScreen() {
       <GroupListHeader
         onActionPress={() => setActionOpen(true)}
         onSettingPress={() => navigation.navigate("Setting")}
+        onNotificationPress={() => navigation.navigate("Notification")}
       />
       <GroupList />
       {/* ✅ 그룹 참여 시트 */}

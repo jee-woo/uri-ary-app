@@ -8,7 +8,8 @@ import { z } from "zod";
 import { RootStackParamList } from "@/types/navigation.types";
 
 import CommonHeader from "@/components/CommonHeader";
-import { createGroup } from "./services/api";
+import { useCreateGroupMutation } from "@/features/group/screens/GroupCreateScreen/hooks/mutations/useCreateGroupMutation";
+import { Group } from "../../types/group.types";
 
 const groupSchema = z.object({
   name: z.string().min(1).max(20, "그룹 이름은 20자 이내로 입력해주세요."),
@@ -22,11 +23,12 @@ type GroupCreateNavigationProp = NativeStackNavigationProp<
 
 export default function GroupCreateScreen() {
   const navigation = useNavigation<GroupCreateNavigationProp>();
+  const createGroupMutation = useCreateGroupMutation();
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isValid },
   } = useForm<GroupForm>({
     resolver: zodResolver(groupSchema),
     defaultValues: {
@@ -35,15 +37,17 @@ export default function GroupCreateScreen() {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: GroupForm) => {
-    try {
-      const group = await createGroup(data.name);
-      alert("그룹이 생성되었습니다!");
-      navigation.navigate("Group", { groupId: group.id });
-    } catch (e) {
-      console.error("그룹 생성 오류:", e);
-      alert("그룹 생성 중 오류가 발생했습니다.");
-    }
+  const onSubmit = (data: GroupForm) => {
+    createGroupMutation.mutate(data.name, {
+      onSuccess: (group: Group) => {
+        alert("그룹이 생성되었습니다!");
+        navigation.navigate("Group", { groupId: group.id });
+      },
+      onError: (e) => {
+        console.error("그룹 생성 오류:", e);
+        alert("그룹 생성 중 오류가 발생했습니다.");
+      },
+    });
   };
 
   return (
@@ -69,12 +73,16 @@ export default function GroupCreateScreen() {
 
         <Button
           onPress={handleSubmit(onSubmit)}
-          disabled={isSubmitting || !isValid}
+          disabled={createGroupMutation.isPending || !isValid}
           backgroundColor="$accent1"
           color="white"
           disabledStyle={{ backgroundColor: "$color5" }}
         >
-          {isSubmitting ? <Spinner size="small" /> : "생성하기"}
+          {createGroupMutation.isPending ? (
+            <Spinner size="small" />
+          ) : (
+            "생성하기"
+          )}
         </Button>
       </YStack>
     </ScrollView>

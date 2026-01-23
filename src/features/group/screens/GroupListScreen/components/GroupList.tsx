@@ -44,7 +44,7 @@ const GroupList = () => {
   return (
     <FlatList
       data={groups}
-      renderItem={({ item }) => <GroupCard id={item.id} name={item.name} />}
+      renderItem={({ item }) => <GroupCard {...item} />}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={{ padding: 16, gap: 12 }}
     />

@@ -6,6 +6,7 @@ import DiaryDetailScreen from "@/features/diary/screens/DiaryDetailScreen";
 import GroupCreateScreen from "@/features/group/screens/GroupCreateScreen";
 import GroupListScreen from "@/features/group/screens/GroupListScreen";
 import GroupScreen from "@/features/group/screens/GroupScreen";
+import NotificationScreen from "@/features/notification/screens/NotificationScreen";
 import SettingScreen from "@/features/setting/screens/SettingScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -22,6 +23,7 @@ const linking = {
       DevLogin: "/test-login",
       GroupCreate: "/groups/new",
       Group: "groups/:groupId",
+      Notification: "/notifications",
       OAuthRedirect: "/oauth2/redirect",
     },
   },
@@ -54,6 +56,7 @@ export default function NavigationContent({
           options={{ title: "일기 작성" }}
         />
         <Stack.Screen name="Diary" component={DiaryDetailScreen} />
+        <Stack.Screen name="Notification" component={NotificationScreen} />
         <Stack.Screen name="Setting" component={SettingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="DevLogin" component={DevLoginScreen} />

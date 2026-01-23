@@ -8,8 +8,9 @@ import { ko } from "date-fns/locale";
 
 export function formatRelativeTime(
   dateString: string,
-  options: { format: "default" | "days" } = { format: "default" }
+  options: { format: "default" | "days" } = { format: "default" },
 ): string {
+  if (!dateString) return "시간 정보 없음";
   const date = parseISO(dateString);
 
   if (isFuture(date)) {

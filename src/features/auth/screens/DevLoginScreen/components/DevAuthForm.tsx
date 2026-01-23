@@ -1,4 +1,5 @@
 import { baseUrl } from "@/constants/api";
+import { useAuthStore } from "@/features/auth/stores/authStore";
 import { storeTokens } from "@/features/auth/utils/tokenManager";
 import { RootStackParamList } from "@/types/navigation.types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +25,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList, "Home">;
 export default function DevAuthForm() {
   const navigation = useNavigation<NavigationProp>();
   const [loading, setLoading] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const {
     control,
@@ -48,8 +50,9 @@ export default function DevAuthForm() {
       });
 
       if (!res.ok) throw new Error(`로그인 실패: ${res.status}`);
-      const { accessToken, refreshToken } = await res.json();
+      const { accessToken, refreshToken, user } = await res.json();
       await storeTokens({ accessToken, refreshToken });
+      setUser(user);
 
       alert("✅ 개발자 로그인 성공!");
       navigation.reset({ index: 0, routes: [{ name: "Home" }] });

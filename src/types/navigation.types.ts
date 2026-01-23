@@ -8,4 +8,5 @@ export type RootStackParamList = {
   DiaryCreate: { groupId: number };
   Diary: { groupId: number; diaryId: number };
   Setting: undefined;
+  Notification: undefined;
 };
