@@ -1,7 +1,6 @@
 import CommonHeader from "@/components/CommonHeader";
 import ScreenLayout from "@/components/layouts/ScreenLayout";
 import { useApproveGroupRequestMutation } from "@/features/group/hooks/mutations/useApproveGroupRequestMutation";
-import { useDeclineGroupRequestMutation } from "@/features/group/hooks/mutations/useDeclineGroupRequestMutation";
 import { Notification } from "@/features/notification/types/notification.types";
 import { RootStackParamList } from "@/types/navigation.types";
 import { useNavigation } from "@react-navigation/native";
@@ -22,7 +21,6 @@ export default function NotificationScreen() {
     useState<Notification | null>(null);
 
   const approveMutation = useApproveGroupRequestMutation();
-  const declineMutation = useDeclineGroupRequestMutation();
 
   const handleRequestNotificationPress = (notification: Notification) => {
     setSelectedNotification(notification);
@@ -46,19 +44,6 @@ export default function NotificationScreen() {
     });
   };
 
-  const handleDecline = () => {
-    if (!selectedNotification) return;
-    declineMutation.mutate(selectedNotification.targetId, {
-      onSuccess: () => {
-        toast.show("요청을 거절했습니다.", { native: true });
-        setSheetOpen(false);
-      },
-      onError: () => {
-        toast.show("오류가 발생했습니다.", { native: true });
-      },
-    });
-  };
-
   return (
     <ScreenLayout>
       <CommonHeader
@@ -70,8 +55,7 @@ export default function NotificationScreen() {
         isOpen={isSheetOpen}
         onClose={() => setSheetOpen(false)}
         onApprove={handleApprove}
-        onDecline={handleDecline}
-        isPending={approveMutation.isPending || declineMutation.isPending}
+        isPending={approveMutation.isPending}
       />
     </ScreenLayout>
   );
