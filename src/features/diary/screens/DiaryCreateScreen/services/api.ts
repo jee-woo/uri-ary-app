@@ -1,21 +1,28 @@
 import apiClient from "@/services/apiClient";
 
+export interface DiaryKeyInfo {
+  userId: number;
+  encryptedAesKey: string;
+}
+
 interface CreateDiaryPayload {
   groupId: string;
   imageUri?: string | null;
+  title: string;
   encryptedContent: string;
   iv: string;
   authTag: string;
-  encryptedAesKey: string;
+  keys: DiaryKeyInfo[];
 }
 
 export const createEncryptedDiary = async ({
   groupId,
+  imageUri,
+  title,
   encryptedContent,
   iv,
   authTag,
-  encryptedAesKey,
-  imageUri,
+  keys,
 }: CreateDiaryPayload) => {
   const formData = new FormData();
 
@@ -23,7 +30,12 @@ export const createEncryptedDiary = async ({
   formData.append("encryptedContent", encryptedContent);
   formData.append("iv", iv);
   formData.append("authTag", authTag);
-  formData.append("encryptedAesKey", encryptedAesKey);
+
+  keys.forEach((keyInfo, index) => {
+    formData.append(`keys[${index}].userId`, String(keyInfo.userId));
+    formData.append(`keys[${index}].encryptedAesKey`, keyInfo.encryptedAesKey);
+  });
+
 
   if (imageUri) {
     const filename = imageUri.split("/").pop()!;

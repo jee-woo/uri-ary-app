@@ -17,16 +17,17 @@ export function DiaryContent({ diary }: Props) {
     const handleDecrypt = async () => {
       try {
         if (!diary) return;
-
         // 1. 암호화된 AES 키 복호화
-        const encryptedAesKey = await decryptAESKeyWithRSA(
-          diary.encryptedAesKey
+        const decryptedAesKey = await decryptAESKeyWithRSA(
+          {
+            encryptedAesKey: diary.keyInfo.encryptedAesKey
+          },
         );
 
         // 2. 본문 복호화
         const content = decryptContent(
           encryptedContent,
-          encryptedAesKey,
+          decryptedAesKey,
           diary.iv,
           diary.authTag
         );
