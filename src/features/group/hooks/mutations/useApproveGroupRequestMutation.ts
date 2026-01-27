@@ -1,10 +1,6 @@
-import {
-  approveGroupRequest,
-  getApprovalInfo,
-  DiaryKeyDto,
-} from "@/features/group/services/api";
-import { decryptAESKeyWithRSA, encryptAESKeyWithRSA } from "@/libs/crypto/aes";
+import { approveGroupRequest } from "@/features/group/services/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { reEncryptDiaryKeysForNewMember } from "@/features/group/libs/keyShareService";
 
 interface ApproveGroupRequestVariables {
   groupId: number;
@@ -15,30 +11,8 @@ export const useApproveGroupRequestMutation = () => {
 
   return useMutation({
     mutationFn: async ({ groupId }: ApproveGroupRequestVariables) => {
-      // 1. Fetch approval info (encrypted diary keys and new member's public key)
-      const { newMemberPublicKey, diaryKeys } = await getApprovalInfo(groupId);
+      const reEncryptedKeys = await reEncryptDiaryKeysForNewMember(groupId);
 
-      // 2. Decrypt and re-encrypt keys
-      const reEncryptedKeys: DiaryKeyDto[] = await Promise.all(
-        diaryKeys.map(async (key) => {
-          const decryptedKey = await decryptAESKeyWithRSA({
-            encryptedAesKey: key.encryptedAesKey,
-          });
-
-          const newEncryptionResult = encryptAESKeyWithRSA(
-            decryptedKey,
-            newMemberPublicKey,
-          );
-
-          return {
-            userId: key.userId,
-            diaryId: key.diaryId,
-            encryptedAesKey: newEncryptionResult.encryptedAesKey,
-          };
-        }),
-      );
-
-      // 3. Call approve API with re-encrypted keys
       return await approveGroupRequest(groupId, { reEncryptedKeys });
     },
     onSuccess: () => {

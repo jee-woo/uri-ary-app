@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, H4, YStack } from "tamagui";
 
-import { clearTokens } from "@/features/auth/utils/tokenManager";
 import { RootStackParamList } from "@/types/navigation.types";
+import { useAuthStore } from "@/features/auth/stores/authStore";
 
 type SettingScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -13,9 +13,11 @@ type SettingScreenNavigationProp = NativeStackNavigationProp<
 
 export default function SettingScreen() {
   const navigation = useNavigation<SettingScreenNavigationProp>();
+  const logout = useAuthStore((state) => state.logout);
 
   const handleLogout = async () => {
-    await clearTokens();
+    await logout();
+
     navigation.reset({
       index: 0,
       routes: [{ name: "Login" }],
