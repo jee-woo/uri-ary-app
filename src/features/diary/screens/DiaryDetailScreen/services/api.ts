@@ -8,10 +8,10 @@ import apiClient from "@/services/apiClient";
  */
 export async function fetchDiaryDetail(
   groupId: string,
-  diaryId: string
+  diaryId: string,
 ): Promise<DiaryDetail> {
   const { data } = await apiClient.get<DiaryDetail>(
-    `/api/groups/${groupId}/diaries/${diaryId}`
+    `/api/groups/${groupId}/diaries/${diaryId}`,
   );
 
   return data;
@@ -20,7 +20,7 @@ export async function fetchDiaryDetail(
 export async function createComment(
   diaryId: string,
   content: string,
-  parentId: number | null = null
+  parentId: number | null = null,
 ) {
   const response = await apiClient.post(`/api/diaries/${diaryId}/comments`, {
     content,

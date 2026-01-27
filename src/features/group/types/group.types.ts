@@ -1,4 +1,4 @@
-export type MemberStatus = 'ACCEPTED' | 'PENDING';
+export type MemberStatus = "ACCEPTED" | "PENDING";
 
 export interface Group {
   id: number;

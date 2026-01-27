@@ -39,7 +39,7 @@ export default function DiaryCreateScreen() {
             onPress: () => navigation.goBack(),
             style: "destructive",
           },
-        ]
+        ],
       );
     } else {
       navigation.goBack();

@@ -3,7 +3,7 @@ import { useToastController } from "@tamagui/toast";
 import { Controller, useFormContext } from "react-hook-form";
 import { Button, Spinner, Text, TextArea, YStack } from "tamagui";
 
-import { usePublicKey } from "@/features/auth/hooks/usePublicKey";
+import { useGroupMembersQuery } from "@/features/group/hooks/queries/useGroupMembersQuery";
 import {
   encryptAESKeyWithRSA,
   encryptContent,
@@ -22,37 +22,45 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
   const navigation = useNavigation<any>();
   const toast = useToastController();
   const { mutate, isPending } = useCreateEncryptedDiaryMutation({ groupId });
-  const { getOrRegisterKey } = usePublicKey();
+  const { data: members, isLoading: isLoadingMembers } = useGroupMembersQuery(
+    Number(groupId),
+  );
 
   const onSubmit = async (data: { content: string }) => {
     try {
-      const myPublicKey = await getOrRegisterKey();
-
-      if (!myPublicKey) {
-        toast.show(
-          "보안키가 등록되지 않았습니다. 설정에서 키를 등록해주세요.",
-          {
-            native: true,
-            backgroundColor: "$red10",
-          }
-        );
+      if (!members) {
+        toast.show("그룹 멤버 정보를 불러오지 못했습니다.", {
+          native: true,
+          backgroundColor: "$red10",
+        });
         return;
       }
 
       const aesKey = generateAESKey();
       const { encryptedContent, iv, authTag } = encryptContent(
         data.content,
-        aesKey
+        aesKey,
       );
-      const encryptedAesKey = encryptAESKeyWithRSA(aesKey, myPublicKey);
+
+      const keys = members.map((member) => {
+        const keyEncryptionResult = encryptAESKeyWithRSA(
+          aesKey,
+          member.publicKey,
+        );
+        return {
+          userId: member.userId,
+          encryptedAesKey: keyEncryptionResult.encryptedAesKey,
+        };
+      });
 
       mutate(
         {
           groupId,
+          title: "", // TODO: Add title form field if necessary
           encryptedContent,
           iv,
           authTag,
-          encryptedAesKey,
+          keys,
           imageUri,
         },
         {
@@ -67,7 +75,7 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
             console.error(e);
             toast.show("작성 실패. 다시 시도해주세요.", { native: true });
           },
-        }
+        },
       );
     } catch (error) {
       if (__DEV__) console.error("암호화 및 저장 실패:", error);
@@ -98,13 +106,13 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
       )}
 
       <Button
-        disabled={isPending || !formState.isValid}
+        disabled={isPending || isLoadingMembers || !formState.isValid}
         onPress={handleSubmit(onSubmit)}
         backgroundColor="$accent1"
         color="white"
         disabledStyle={{ backgroundColor: "$color5" }}
       >
-        {isPending ? <Spinner size="small" /> : "작성하기"}
+        {isPending || isLoadingMembers ? <Spinner size="small" /> : "작성하기"}
       </Button>
     </YStack>
   );

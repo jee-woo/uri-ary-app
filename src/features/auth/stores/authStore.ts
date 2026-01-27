@@ -62,6 +62,6 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }), // 저장할 상태만 선택
-    }
-  )
+    },
+  ),
 );

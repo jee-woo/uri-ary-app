@@ -29,26 +29,31 @@ export const encryptContent = (content: string, aesKey: string) => {
 // 3. AES 키를 공개키로 암호화
 export const encryptAESKeyWithRSA = (
   aesKey: string,
-  publicKey: string
-): string => {
-  const encryptedKey = crypto.publicEncrypt(
-    {
-      key: publicKey,
-      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-      oaepHash: "sha256",
-    },
-    // 중요: aesKey(base64문자열)를 다시 32바이트 바이너리로 돌려서 암호화해야 합니다.
-    Buffer.from(aesKey, "base64")
-  );
-  return encryptedKey.toString("base64");
+  publicKey: string,
+): { encryptedAesKey: string } => {
+  const encryptedAesKey = crypto
+    .publicEncrypt(
+      {
+        key: publicKey,
+        padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+        oaepHash: "sha256",
+      },
+      // 중요: aesKey(base64문자열)를 다시 32바이트 바이너리로 돌려서 암호화해야 합니다.
+      Buffer.from(aesKey, "base64"),
+    )
+    .toString("base64");
+
+  return { encryptedAesKey };
 };
 
 /**
  * 4. RSA 개인키로 AES 키 복호화
  */
-export const decryptAESKeyWithRSA = async (
-  encryptedAesKey: string
-): Promise<string> => {
+export const decryptAESKeyWithRSA = async ({
+  encryptedAesKey,
+}: {
+  encryptedAesKey: string;
+}): Promise<string> => {
   try {
     if (!encryptedAesKey) throw new Error("encryptedAesKey가 비어있습니다.");
 
@@ -63,7 +68,7 @@ export const decryptAESKeyWithRSA = async (
         padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
         oaepHash: "sha256",
       },
-      inputBuffer
+      inputBuffer,
     );
 
     // 32바이트 바이너리를 Base64 문자열로 반환
@@ -81,7 +86,7 @@ export const decryptContent = (
   encryptedContent: string,
   aesKey: string,
   iv: string,
-  authTag: string
+  authTag: string,
 ): string => {
   try {
     // 32바이트로 정확히 변환되도록 "base64" 인자 확인

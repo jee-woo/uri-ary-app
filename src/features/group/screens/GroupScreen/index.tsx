@@ -56,7 +56,7 @@ export default function GroupScreen() {
         isLast={index === section.data.length - 1}
       />
     ),
-    [groupId]
+    [groupId],
   );
 
   return (

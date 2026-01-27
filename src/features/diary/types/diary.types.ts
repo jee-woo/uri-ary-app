@@ -11,6 +11,10 @@ export type NestedComment = Comment & {
   parentAuthorUsername?: string;
 };
 
+export interface EncryptedKeyInfo {
+  encryptedAesKey: string;
+}
+
 export type DiaryDetail = {
   id: number;
   title: string;
@@ -19,7 +23,7 @@ export type DiaryDetail = {
   comments: Comment[];
   imageUrl?: string;
   encryptedContent: string;
-  encryptedAesKey: string;
-  iv: string;
-  authTag: string;
+  iv: string; // for content
+  authTag: string; // for content
+  keyInfo: EncryptedKeyInfo; // for key
 };

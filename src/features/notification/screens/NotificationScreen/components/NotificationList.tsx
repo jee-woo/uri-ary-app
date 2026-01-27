@@ -10,7 +10,9 @@ interface NotificationListProps {
   onNotificationPress: (notification: Notification) => void;
 }
 
-export default function NotificationList({ onNotificationPress }: NotificationListProps) {
+export default function NotificationList({
+  onNotificationPress,
+}: NotificationListProps) {
   const { data: notifications } = useNotificationListQuery();
   const theme = useTheme();
 

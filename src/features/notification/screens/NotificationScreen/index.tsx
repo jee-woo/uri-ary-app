@@ -33,12 +33,18 @@ export default function NotificationScreen() {
 
   const handleApprove = () => {
     if (!selectedNotification) return;
-    approveMutation.mutate(selectedNotification.targetId, {
+
+    const variables = {
+      groupId: selectedNotification.targetId,
+    };
+
+    approveMutation.mutate(variables, {
       onSuccess: () => {
         toast.show("요청을 수락했습니다.", { native: true });
         setSheetOpen(false);
       },
-      onError: () => {
+      onError: (e) => {
+        console.error(e);
         toast.show("오류가 발생했습니다.", { native: true });
       },
     });

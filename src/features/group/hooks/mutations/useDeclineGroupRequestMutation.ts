@@ -1,4 +1,4 @@
-import { declineGroupRequest } from "@/features/group/screens/GroupListScreen/services/api";
+import { declineGroupRequest } from "@/features/group/services/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useDeclineGroupRequestMutation = () => {
