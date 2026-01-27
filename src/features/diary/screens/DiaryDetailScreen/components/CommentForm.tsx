@@ -44,7 +44,7 @@ export default function CommentForm({
         onError: () => {
           toast.show("댓글 등록 실패", { native: true });
         },
-      }
+      },
     );
   };
 

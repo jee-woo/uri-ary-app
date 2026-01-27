@@ -30,16 +30,18 @@ export const encryptContent = (content: string, aesKey: string) => {
 export const encryptAESKeyWithRSA = (
   aesKey: string,
   publicKey: string,
-): { encryptedAesKey: string; } => {
-  const encryptedAesKey = crypto.publicEncrypt(
-    {
-      key: publicKey,
-      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-      oaepHash: "sha256",
-    },
-    // 중요: aesKey(base64문자열)를 다시 32바이트 바이너리로 돌려서 암호화해야 합니다.
-    Buffer.from(aesKey, "base64"),
-  ).toString("base64");
+): { encryptedAesKey: string } => {
+  const encryptedAesKey = crypto
+    .publicEncrypt(
+      {
+        key: publicKey,
+        padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+        oaepHash: "sha256",
+      },
+      // 중요: aesKey(base64문자열)를 다시 32바이트 바이너리로 돌려서 암호화해야 합니다.
+      Buffer.from(aesKey, "base64"),
+    )
+    .toString("base64");
 
   return { encryptedAesKey };
 };
@@ -84,7 +86,7 @@ export const decryptContent = (
   encryptedContent: string,
   aesKey: string,
   iv: string,
-  authTag: string
+  authTag: string,
 ): string => {
   try {
     // 32바이트로 정확히 변환되도록 "base64" 인자 확인

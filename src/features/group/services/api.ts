@@ -59,7 +59,9 @@ export interface GroupMember {
   publicKey: string;
 }
 
-export const getGroupMembers = async (groupId: number): Promise<GroupMember[]> => {
+export const getGroupMembers = async (
+  groupId: number,
+): Promise<GroupMember[]> => {
   const response = await apiClient.get(`/api/groups/${groupId}/members`);
   return response.data;
 };

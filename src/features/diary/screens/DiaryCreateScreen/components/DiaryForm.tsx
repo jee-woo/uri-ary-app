@@ -43,7 +43,10 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
       );
 
       const keys = members.map((member) => {
-        const keyEncryptionResult = encryptAESKeyWithRSA(aesKey, member.publicKey);
+        const keyEncryptionResult = encryptAESKeyWithRSA(
+          aesKey,
+          member.publicKey,
+        );
         return {
           userId: member.userId,
           encryptedAesKey: keyEncryptionResult.encryptedAesKey,

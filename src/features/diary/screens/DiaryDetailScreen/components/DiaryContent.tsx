@@ -18,18 +18,16 @@ export function DiaryContent({ diary }: Props) {
       try {
         if (!diary) return;
         // 1. 암호화된 AES 키 복호화
-        const decryptedAesKey = await decryptAESKeyWithRSA(
-          {
-            encryptedAesKey: diary.keyInfo.encryptedAesKey
-          },
-        );
+        const decryptedAesKey = await decryptAESKeyWithRSA({
+          encryptedAesKey: diary.keyInfo.encryptedAesKey,
+        });
 
         // 2. 본문 복호화
         const content = decryptContent(
           encryptedContent,
           decryptedAesKey,
           diary.iv,
-          diary.authTag
+          diary.authTag,
         );
 
         setDecryptedContent(content);

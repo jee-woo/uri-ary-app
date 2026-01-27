@@ -3,10 +3,7 @@ import {
   getApprovalInfo,
   DiaryKeyDto,
 } from "@/features/group/services/api";
-import {
-  decryptAESKeyWithRSA,
-  encryptAESKeyWithRSA,
-} from "@/libs/crypto/aes";
+import { decryptAESKeyWithRSA, encryptAESKeyWithRSA } from "@/libs/crypto/aes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ApproveGroupRequestVariables {
@@ -40,7 +37,6 @@ export const useApproveGroupRequestMutation = () => {
           };
         }),
       );
-
 
       // 3. Call approve API with re-encrypted keys
       return await approveGroupRequest(groupId, { reEncryptedKeys });

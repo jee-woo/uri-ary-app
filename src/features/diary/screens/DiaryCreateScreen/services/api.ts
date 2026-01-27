@@ -36,7 +36,6 @@ export const createEncryptedDiary = async ({
     formData.append(`keys[${index}].encryptedAesKey`, keyInfo.encryptedAesKey);
   });
 
-
   if (imageUri) {
     const filename = imageUri.split("/").pop()!;
     const ext = filename.split(".").pop();

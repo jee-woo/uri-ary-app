@@ -41,7 +41,7 @@ const groupDetails: Record<number, GroupDetail> = Object.fromEntries(
       createdAt: randomDateWithin(),
       imageUrl: faker.datatype.boolean()
         ? `https://placehold.co/300x300?text=Post+${String(
-            group.id * 100 + idx
+            group.id * 100 + idx,
           )}`
         : "",
     }));
@@ -55,7 +55,7 @@ const groupDetails: Record<number, GroupDetail> = Object.fromEntries(
         diaries,
       } satisfies GroupDetail,
     ];
-  })
+  }),
 );
 
 // ─────────────── 일기 상세 (/api/groups/:groupId/diaries/:diaryId) ───────────────

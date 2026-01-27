@@ -1,4 +1,3 @@
-
 import { Spinner, YStack } from "tamagui";
 
 export default function SuspenseFallback() {

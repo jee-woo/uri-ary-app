@@ -44,7 +44,7 @@ export default function NotificationScreen() {
         setSheetOpen(false);
       },
       onError: (e) => {
-        console.error(e)
+        console.error(e);
         toast.show("오류가 발생했습니다.", { native: true });
       },
     });

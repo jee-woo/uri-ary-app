@@ -71,7 +71,7 @@ apiClient.interceptors.request.use(
   (error) => {
     // 요청 설정 오류 발생 시
     return Promise.reject(error);
-  }
+  },
 );
 
 apiClient.interceptors.response.use(
@@ -136,7 +136,7 @@ apiClient.interceptors.response.use(
 
       return handleLogout(refreshError);
     }
-  }
+  },
 );
 
 export default apiClient;
