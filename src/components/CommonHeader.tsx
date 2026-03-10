@@ -47,8 +47,6 @@ export default function CommonHeader({
       height={52}
       paddingHorizontal={16}
       alignItems="center"
-      borderBottomWidth={1}
-      borderBottomColor="$borderColor"
     >
       <XStack position="absolute" left={16} zIndex={1}>
         {left}
