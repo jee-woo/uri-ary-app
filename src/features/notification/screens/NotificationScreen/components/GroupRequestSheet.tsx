@@ -39,8 +39,16 @@ export default function GroupRequestSheet({
             onPress={onApprove}
             disabled={isPending}
             pressTheme
+            backgroundColor="$accent1"
+            color="white"
+            borderRadius="$4"
           />
-          <Button onPress={onClose} disabled={isPending}>
+          <Button
+            onPress={onClose}
+            disabled={isPending}
+            backgroundColor="$color2"
+            color="$color12"
+          >
             닫기
           </Button>
         </YStack>

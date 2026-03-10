@@ -17,18 +17,18 @@ export default function CommentItem({
     <YStack gap={4}>
       <XStack justifyContent="space-between" alignItems="center">
         <XStack alignItems="center" gap={6}>
-          <Text fontWeight="bold" fontSize="$4">
+          <Text fontWeight="600" fontSize="$3" color="$color11">
             {comment.authorUsername}
           </Text>
         </XStack>
-        <Text color="$color11" fontSize={"$2"}>
+        <Text color="$color7" fontSize="$2">
           {formatRelativeTime(comment.createdAt)}
         </Text>
       </XStack>
 
-      <Text fontSize="$4" lineHeight="$4" paddingLeft={2}>
+      <Text fontSize="$3" lineHeight="$4" color="$color9" paddingLeft={2}>
         {comment.parentAuthorUsername && (
-          <Text fontWeight="bold" color="$accent1">
+          <Text fontWeight="600" color="$accent1">
             @{comment.parentAuthorUsername}{" "}
           </Text>
         )}
@@ -47,8 +47,8 @@ export default function CommentItem({
             alignItems: "center",
           }}
         >
-          <MessageCircle size={14} color={theme.color9?.val} />
-          <Text fontSize="$2" marginLeft={4} color="$color11">
+          <MessageCircle size={14} color={theme.color7?.val} />
+          <Text fontSize="$2" marginLeft={4} color="$color7">
             답글
           </Text>
         </Pressable>

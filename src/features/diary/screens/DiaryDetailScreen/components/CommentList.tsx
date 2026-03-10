@@ -15,7 +15,7 @@ export default function CommentList({
 
   return (
     <YStack gap={16}>
-      <Text fontSize="$5" fontWeight="bold">
+      <Text fontSize="$5" fontWeight="600" color="$color11">
         댓글 {commentTree.length}
       </Text>
 

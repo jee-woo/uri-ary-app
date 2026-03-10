@@ -41,11 +41,11 @@ export function DiaryContent({ diary }: Props) {
   }, [diary]);
 
   return (
-    <YStack gap={10}>
-      <Text fontSize="$6" fontWeight="700">
+    <YStack gap={6}>
+      <Text fontSize="$7" fontWeight="700" color="$color11">
         {authorUsername}
       </Text>
-      <Text fontSize="$3" color="$colorPress">
+      <Text fontSize="$2" color="$color7">
         {formatRelativeTime(createdAt)}
       </Text>
 
@@ -56,12 +56,12 @@ export function DiaryContent({ diary }: Props) {
             width: "100%",
             height: 220,
             borderRadius: 10,
-            marginTop: 6,
+            marginTop: 10,
           }}
         />
       )}
 
-      <Text fontSize="$5" lineHeight="$5" marginTop={4}>
+      <Text fontSize="$5" lineHeight="$6" marginTop={8} color="$color10">
         {decryptedContent}
       </Text>
     </YStack>

@@ -98,6 +98,8 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
             onChangeText={onChange}
             textAlignVertical="top"
             flex={1}
+            borderWidth={0}
+            backgroundColor="$cardBackground"
           />
         )}
       />
@@ -110,7 +112,7 @@ export default function DiaryForm({ groupId, imageUri }: Props) {
         onPress={handleSubmit(onSubmit)}
         backgroundColor="$accent1"
         color="white"
-        disabledStyle={{ backgroundColor: "$color5" }}
+        disabledStyle={{ backgroundColor: "$color3", opacity: 0.7 }}
       >
         {isPending || isLoadingMembers ? <Spinner size="small" /> : "작성하기"}
       </Button>

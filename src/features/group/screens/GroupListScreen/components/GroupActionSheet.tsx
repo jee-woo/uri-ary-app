@@ -49,7 +49,9 @@ export default function GroupActionSheet({
               onClose();
             }}
           />
-          <Button onPress={onClose}>닫기</Button>
+          <Button onPress={onClose} backgroundColor="$color2" color="$color12">
+            닫기
+          </Button>
         </YStack>
       </Sheet.Frame>
     </Sheet>

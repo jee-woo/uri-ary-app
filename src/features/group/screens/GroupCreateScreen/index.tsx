@@ -62,6 +62,8 @@ export default function GroupCreateScreen() {
               placeholder="그룹 이름을 입력하세요"
               value={value}
               onChangeText={onChange}
+              borderWidth={0}
+              backgroundColor="$cardBackground"
             />
           )}
         />
@@ -76,7 +78,7 @@ export default function GroupCreateScreen() {
           disabled={createGroupMutation.isPending || !isValid}
           backgroundColor="$accent1"
           color="white"
-          disabledStyle={{ backgroundColor: "$color5" }}
+          disabledStyle={{ backgroundColor: "$color3", opacity: 0.7 }}
         >
           {createGroupMutation.isPending ? (
             <Spinner size="small" />

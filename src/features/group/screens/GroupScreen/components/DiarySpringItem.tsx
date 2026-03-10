@@ -22,7 +22,7 @@ interface DiarySpringItemProps {
 const ConnectorLine = styled(View, {
   name: "ConnectorLine",
   width: 2,
-  backgroundColor: "#d0d0d0",
+  backgroundColor: "$color3",
   position: "absolute",
   left: "50%",
   x: -1,
@@ -50,8 +50,6 @@ export default function DiarySpringItem({
       )}
 
       <Card
-        elevate
-        bordered
         pressStyle={{ scale: 0.98 }}
         onPress={() =>
           navigation.navigate("Diary", {
@@ -61,11 +59,9 @@ export default function DiarySpringItem({
         }
         padding={14}
         borderRadius="$4"
-        backgroundColor="#fcfcf7"
-        shadowColor="rgba(0,0,0,0.1)"
-        shadowOffset={{ width: 0, height: 2 }}
-        shadowRadius={4}
-        shadowOpacity={0.2}
+        backgroundColor="$cardBackground"
+        borderWidth={1}
+        borderColor="$color3"
         width="100%"
         zIndex={2}
         marginVertical={marginForConnection}
@@ -79,10 +75,10 @@ export default function DiarySpringItem({
           )}
 
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$3" fontWeight="600">
+            <Text fontSize="$3" fontWeight="600" color="$color11">
               {diary.authorUsername}
             </Text>
-            <Text fontSize="$2" color="$colorPress">
+            <Text fontSize="$2" color="$color7">
               {/* {new Date(diary.createdAt).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -91,7 +87,7 @@ export default function DiarySpringItem({
             </Text>
           </XStack>
 
-          <Text fontSize="$4" lineHeight="$4" numberOfLines={3}>
+          <Text fontSize="$3" lineHeight="$4" numberOfLines={3} color="$color9">
             {diary.encryptedContent}
           </Text>
         </YStack>
