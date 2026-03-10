@@ -11,6 +11,7 @@ import SettingScreen from "@/features/setting/screens/SettingScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
+import { useTheme } from "tamagui";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,11 +35,16 @@ export default function NavigationContent({
 }: {
   isAuthenticated: boolean;
 }) {
+  const theme = useTheme();
+
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator
         initialRouteName={isAuthenticated ? "Home" : "Login"}
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: theme.background.val },
+        }}
       >
         <Stack.Screen name="Home" component={GroupListScreen} />
         <Stack.Screen name="Group" component={GroupScreen} />

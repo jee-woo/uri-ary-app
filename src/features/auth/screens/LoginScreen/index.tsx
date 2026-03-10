@@ -40,7 +40,7 @@ export default function LoginScreen() {
           onPress={handleKakaoLogin}
           backgroundColor="#FEE500"
           pressStyle={{ backgroundColor: "#F2D500" }}
-          disabledStyle={{ backgroundColor: "" }}
+          disabledStyle={{ opacity: 0.5 }}
           width="100%"
           height="$5"
           borderRadius="$4"
@@ -59,8 +59,9 @@ export default function LoginScreen() {
         {__DEV__ && (
           <Button
             onPress={() => navigation.navigate("DevLogin")}
-            variant="outlined"
             width="100%"
+            backgroundColor="$color2"
+            color="$color12"
           >
             테스트 로그인
           </Button>

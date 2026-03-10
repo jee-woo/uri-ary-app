@@ -35,7 +35,7 @@ export default function DiaryImagePicker({ imageUri, setImageUri }: Props) {
           borderRadius={8}
         />
       )}
-      <Button onPress={pickImage} variant="outlined">
+      <Button onPress={pickImage} backgroundColor="$color2" color="$color12">
         {imageUri ? "사진 다시 선택" : "사진 선택 (선택사항)"}
       </Button>
     </>

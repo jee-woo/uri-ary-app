@@ -40,6 +40,8 @@ export default function InviteCodeSheet({
               textAlign="center"
               flex={1}
               color="$color"
+              borderWidth={0}
+              backgroundColor="$cardBackground"
             />
             <Button
               size="$3"
@@ -49,7 +51,15 @@ export default function InviteCodeSheet({
               color="white"
             />
           </XStack>
-          <Button onPress={() => onOpenChange(false)}>닫기</Button>
+          <Button
+            onPress={() => onOpenChange(false)}
+            chromeless
+            color="$color7"
+            size="$3"
+            pressStyle={{ borderColor: "transparent" }}
+          >
+            닫기
+          </Button>
         </YStack>
       </Sheet.Frame>
     </Sheet>

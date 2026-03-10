@@ -17,6 +17,13 @@ export async function fetchDiaryDetail(
   return data;
 }
 
+export async function deleteDiary(
+  groupId: string,
+  diaryId: string,
+): Promise<void> {
+  await apiClient.delete(`/api/groups/${groupId}/diaries/${diaryId}`);
+}
+
 export async function createComment(
   diaryId: string,
   content: string,

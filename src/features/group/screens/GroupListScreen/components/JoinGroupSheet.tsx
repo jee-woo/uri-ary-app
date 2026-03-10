@@ -49,12 +49,27 @@ export default function JoinGroupSheet({
             placeholder="참여 코드를 입력하세요"
             value={code}
             onChangeText={setCode}
+            borderWidth={0}
+            backgroundColor="$cardBackground"
           />
           <YStack gap={8}>
-            <Button onPress={() => onJoin(code)} disabled={isPending}>
+            <Button
+              onPress={() => onJoin(code)}
+              disabled={isPending || !code.trim()}
+              backgroundColor="$accent1"
+              color="white"
+              disabledStyle={{ backgroundColor: "$color3", opacity: 0.7 }}
+            >
               {isPending ? "참여 중..." : "참여"}
             </Button>
-            <Button variant="outlined" onPress={onClose} disabled={isPending}>
+            <Button
+              onPress={onClose}
+              disabled={isPending}
+              chromeless
+              color="$color7"
+              size="$3"
+              pressStyle={{ borderColor: "transparent" }}
+            >
               닫기
             </Button>
           </YStack>

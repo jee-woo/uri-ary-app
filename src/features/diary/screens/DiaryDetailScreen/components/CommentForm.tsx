@@ -64,7 +64,7 @@ export default function CommentForm({
       {isReplying && (
         <YStack gap={4} padding={8} backgroundColor="$color2" borderRadius={8}>
           <XStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="$3" color="$color12">
+            <Text fontSize="$2" fontWeight="500" color="$color8">
               {parentUsername ?? "작성자"}님에게 답글 작성 중...
             </Text>
             <Button
@@ -79,8 +79,8 @@ export default function CommentForm({
 
           {parentContent && (
             <Text
-              fontSize="$3"
-              color="$color11"
+              fontSize="$2"
+              color="$color7"
               numberOfLines={1}
               ellipsizeMode="tail"
             >
@@ -102,8 +102,8 @@ export default function CommentForm({
           maxHeight={100}
           paddingHorizontal={15}
           paddingVertical={10}
-          borderColor="$color6"
-          focusStyle={{ borderColor: "$accent1" }}
+          borderWidth={0}
+          backgroundColor="$cardBackground"
         />
 
         <Button
@@ -114,7 +114,7 @@ export default function CommentForm({
           minWidth={60}
           backgroundColor="$accent1"
           color="white"
-          disabledStyle={{ backgroundColor: "$color5" }}
+          disabledStyle={{ backgroundColor: "$color3", opacity: 0.7 }}
         >
           등록
         </Button>
