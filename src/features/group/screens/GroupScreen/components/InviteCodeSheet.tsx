@@ -53,8 +53,10 @@ export default function InviteCodeSheet({
           </XStack>
           <Button
             onPress={() => onOpenChange(false)}
-            backgroundColor="$color2"
-            color="$color12"
+            chromeless
+            color="$color7"
+            size="$3"
+            pressStyle={{ borderColor: "transparent" }}
           >
             닫기
           </Button>
