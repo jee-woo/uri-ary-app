@@ -45,3 +45,5 @@ yarn-error.*
 
 build*
 app.config.js
+
+PORTFOLIO_*.md
