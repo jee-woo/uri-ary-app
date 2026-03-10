@@ -25,5 +25,6 @@ export type DiaryDetail = {
   encryptedContent: string;
   iv: string; // for content
   authTag: string; // for content
+  mine: boolean;
   keyInfo: EncryptedKeyInfo; // for key
 };

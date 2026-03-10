@@ -46,43 +46,45 @@ export default function DiaryDetailScreen() {
       <YStack flex={1} backgroundColor="$background">
         <CommonHeader
           right={
-            <Button
-              icon={<Trash2 size={20} color={theme.color7.val} />}
-              chromeless
-              padding="$2"
-              pressStyle={{
-                scale: 0.9,
-                opacity: 0.7,
-                backgroundColor: "transparent",
-                borderColor: "transparent",
-              }}
-              onPress={() =>
-                Alert.alert("일기 삭제", "정말 이 일기를 삭제하시겠습니까?", [
-                  { text: "취소", style: "cancel" },
-                  {
-                    text: "삭제",
-                    style: "destructive",
-                    onPress: () =>
-                      deleteMutation.mutate(
-                        { groupId, diaryId },
-                        {
-                          onSuccess: () => {
-                            toast.show("일기가 삭제되었습니다.", {
-                              native: true,
-                            });
-                            navigation.goBack();
+            diary.mine ? (
+              <Button
+                icon={<Trash2 size={20} color={theme.color7.val} />}
+                chromeless
+                padding="$2"
+                pressStyle={{
+                  scale: 0.9,
+                  opacity: 0.7,
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                }}
+                onPress={() =>
+                  Alert.alert("일기 삭제", "정말 이 일기를 삭제하시겠습니까?", [
+                    { text: "취소", style: "cancel" },
+                    {
+                      text: "삭제",
+                      style: "destructive",
+                      onPress: () =>
+                        deleteMutation.mutate(
+                          { groupId, diaryId },
+                          {
+                            onSuccess: () => {
+                              toast.show("일기가 삭제되었습니다.", {
+                                native: true,
+                              });
+                              navigation.goBack();
+                            },
+                            onError: () => {
+                              toast.show("일기 삭제에 실패했습니다.", {
+                                native: true,
+                              });
+                            },
                           },
-                          onError: () => {
-                            toast.show("일기 삭제에 실패했습니다.", {
-                              native: true,
-                            });
-                          },
-                        },
-                      ),
-                  },
-                ])
-              }
-            />
+                        ),
+                    },
+                  ])
+                }
+              />
+            ) : undefined
           }
         />
         <ScrollView>
@@ -104,9 +106,7 @@ export default function DiaryDetailScreen() {
           </YStack>
         </ScrollView>
 
-        <YStack
-          padding={12}
-        >
+        <YStack padding={12}>
           <CommentForm
             diaryId={diaryId}
             parentId={replyParentId}
