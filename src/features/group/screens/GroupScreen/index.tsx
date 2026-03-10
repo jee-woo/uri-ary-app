@@ -3,10 +3,10 @@ import { RootStackParamList } from "@/types/navigation.types";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { BookHeart } from "lucide-react-native";
+import { BookHeart, Plus } from "lucide-react-native";
 import { useCallback, useMemo, useState } from "react";
 import { SectionList } from "react-native";
-import { Text, YStack, useTheme } from "tamagui";
+import { Button, Text, YStack, useTheme } from "tamagui";
 import { Diary, GroupDetail } from "../../types/group.types";
 import DiarySpringItem from "./components/DiarySpringItem";
 import GroupDetailHeader from "./components/GroupDetailHeader";
@@ -61,12 +61,7 @@ export default function GroupScreen() {
 
   return (
     <YStack flex={1}>
-      <GroupDetailHeader
-        onActionPress={() =>
-          navigation.navigate("DiaryCreate", { groupId: Number(groupId) })
-        }
-        group={group}
-      />
+      <GroupDetailHeader group={group} />
 
       {!group.diaries || group.diaries.length === 0 ? (
         <EmptyPlaceholder
@@ -88,6 +83,22 @@ export default function GroupScreen() {
           ItemSeparatorComponent={() => <YStack />}
         />
       )}
+
+      <Button
+        icon={Plus}
+        circular
+        size="$5"
+        backgroundColor="$accent1"
+        color="white"
+        position="absolute"
+        bottom={24}
+        right={20}
+        elevation={4}
+        pressStyle={{ scale: 0.95, opacity: 0.9 }}
+        onPress={() =>
+          navigation.navigate("DiaryCreate", { groupId: Number(groupId) })
+        }
+      />
     </YStack>
   );
 }

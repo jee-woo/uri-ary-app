@@ -8,12 +8,10 @@ import GroupCard from "./GroupCard";
 import { fetchGroups } from "@/features/group/services/api";
 
 const GroupList = () => {
-  const {
-    data: groups,
-    isLoading,
-    isError,
-    refetch,
-  } = useSuspenseQuery<Group[]>({ queryKey: ["groups"], queryFn: fetchGroups });
+  const { data: groups } = useSuspenseQuery<Group[]>({
+    queryKey: ["groups"],
+    queryFn: fetchGroups,
+  });
 
   const theme = useTheme();
 

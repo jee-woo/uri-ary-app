@@ -3,7 +3,10 @@ export type MemberStatus = "ACCEPTED" | "PENDING";
 export interface Group {
   id: number;
   name: string;
+  code: string;
   status: MemberStatus;
+  memberCount: number;
+  lastDiaryAt: string | null;
 }
 
 interface Member {
