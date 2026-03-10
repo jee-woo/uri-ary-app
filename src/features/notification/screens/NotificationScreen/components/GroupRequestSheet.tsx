@@ -1,5 +1,5 @@
 import { Check } from "lucide-react-native";
-import { Button, ListItem, Sheet, YStack } from "tamagui";
+import { Button, Sheet, YStack } from "tamagui";
 
 interface GroupRequestSheetProps {
   isOpen: boolean;
@@ -33,16 +33,16 @@ export default function GroupRequestSheet({
         padding={16}
       >
         <YStack gap={12}>
-          <ListItem
-            title="수락"
+          <Button
             icon={Check}
             onPress={onApprove}
             disabled={isPending}
-            pressTheme
             backgroundColor="$accent1"
             color="white"
-            borderRadius="$4"
-          />
+            disabledStyle={{ backgroundColor: "$color3", opacity: 0.7 }}
+          >
+            수락
+          </Button>
           <Button
             onPress={onClose}
             disabled={isPending}
